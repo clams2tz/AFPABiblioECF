@@ -20,7 +20,22 @@ class SalleDeTravail
     private ?int $max_capacity = null;
 
     #[ORM\Column]
-    private array $equipment = [];
+    private ?bool $wifi = null;
+
+    #[ORM\Column]
+    private ?bool $projector = null;
+
+    #[ORM\Column]
+    private ?bool $tableau = null;
+
+    #[ORM\Column]
+    private ?int $prises_electric = null;
+
+    #[ORM\Column]
+    private ?bool $television = null;
+
+    #[ORM\Column]
+    private ?bool $climatisation = null;
 
     public function getId(): ?int
     {
@@ -51,14 +66,74 @@ class SalleDeTravail
         return $this;
     }
 
-    public function getEquipment(): array
+    public function isWifi(): ?bool
     {
-        return $this->equipment;
+        return $this->wifi;
     }
 
-    public function setEquipment(array $equipment): static
+    public function setWifi(bool $wifi): static
     {
-        $this->equipment = $equipment;
+        $this->wifi = $wifi;
+
+        return $this;
+    }
+
+    public function isProjector(): ?bool
+    {
+        return $this->projector;
+    }
+
+    public function setProjector(bool $projector): static
+    {
+        $this->projector = $projector;
+
+        return $this;
+    }
+
+    public function isTableau(): ?bool
+    {
+        return $this->tableau;
+    }
+
+    public function setTableau(bool $tableau): static
+    {
+        $this->tableau = $tableau;
+
+        return $this;
+    }
+
+    public function getPrisesElectric(): ?int
+    {
+        return $this->prises_electric;
+    }
+
+    public function setPrisesElectric(int $prises_electric): static
+    {
+        $this->prises_electric = $prises_electric;
+
+        return $this;
+    }
+
+    public function isTelevision(): ?bool
+    {
+        return $this->television;
+    }
+
+    public function setTelevision(bool $television): static
+    {
+        $this->television = $television;
+
+        return $this;
+    }
+
+    public function isClimatisation(): ?bool
+    {
+        return $this->climatisation;
+    }
+
+    public function setClimatisation(bool $climatisation): static
+    {
+        $this->climatisation = $climatisation;
 
         return $this;
     }

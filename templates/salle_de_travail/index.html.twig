@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Salles de Travail{% endblock %}
+
+{% block body %}
+
+<div class="container">
+{% for salle in salles %}
+    <h2>{{ salle.nom }}</h2>
+    <p>Max. {{ salle.maxCapacity }} personnes</p>
+    <p>Prise(s) electrique disponible:  {{ salle.prisesElectric }}</p>
+    <p>Equipement: {{ salle.wifi }}, {{ salle.projector }}, {{salle.tableau}}, {{salle.television}}, {{ salle.climatisation }} </p> 
+    {# <a href= "{{path('app_salle_de_travail')}}"> #}
+{% endfor %}    
+</div>
+{% endblock %}
