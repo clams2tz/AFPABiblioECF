@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\BooksRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Enum\BookCondition;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\BooksRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use phpDocumentor\Reflection\Types\Self_;
 
 #[ORM\Entity(repositoryClass: BooksRepository::class)]
 class Books
@@ -26,7 +28,7 @@ class Books
     private ?string $ISBN = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $etat = null;
+    private ?string $book_condition;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
@@ -87,14 +89,14 @@ class Books
         return $this;
     }
 
-    public function getEtat(): ?string
+    public function getBookCondition(): ?string
     {
-        return $this->etat;
+        return $this->book_condition;
     }
 
-    public function setEtat(string $etat): static
+    public function setBookCondition(String $book_condition): Self
     {
-        $this->etat = $etat;
+        $this->book_condition = $book_condition;
 
         return $this;
     }

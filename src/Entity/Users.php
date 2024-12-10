@@ -33,8 +33,8 @@ class Users
     #[ORM\Column]
     private ?int $telephone = null;
 
-    #[ORM\Column(type: Types::SIMPLE_ARRAY, enumType: UserRole::class)]
-    private array $user_role = [];
+    #[ORM\Column(type: 'string', enumType: UserRole::class)]
+    private UserRole $user_role = UserRole::USER; 
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birthday = null;
@@ -136,12 +136,12 @@ class Users
     /**
      * @return UserRole[]
      */
-    public function getUserRole(): array
+    public function getUserRole(): UserRole
     {
         return $this->user_role;
     }
 
-    public function setUserRole(array $user_role): static
+    public function setUserRole(UserRole $user_role): self
     {
         $this->user_role = $user_role;
 
