@@ -8,10 +8,11 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class Users implements PasswordAuthenticatedUserInterface
+class Users implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -52,7 +53,7 @@ class Users implements PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Abonnement::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Abonnement $abonnement = null;
+    private Abonnement $abonnement;
 
     public function getId(): ?int
     {
@@ -138,24 +139,40 @@ class Users implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    // /**
+    //  * @return UserRole[]
+    //  */
+
+    // public function getRoles(): UserRole
+
+    // {
+    //     return $this->user_role;
+    // }
+
+
+    // public function setRoles(UserRole $user_role): self
+
+    // {
+    //     $this->user_role = $user_role;
+
+    //     return $this;
+    // }
+
     /**
-     * @return UserRole[]
+     * 
+     * @return string[]
      */
-
-    public function getRoles(): UserRole
-
+    public function getRoles(): array
     {
-        return $this->user_role;
+        return [$this->user_role->value]; 
     }
-
 
     public function setRoles(UserRole $user_role): self
-
     {
         $this->user_role = $user_role;
-
         return $this;
     }
+
     public function getBirthday(): ?\DateTimeInterface
     {
         return $this->birthday;
@@ -192,14 +209,14 @@ class Users implements PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function setAbonnement(?Abonnement $abonnement): static
+    public function setAbonnement(Abonnement $abonnement): static
     {
         $this->abonnement = $abonnement;
 
         return $this;
     }
 
-    public function getAbonnement(): ?Abonnement
+    public function getAbonnement(): Abonnement
     {
         return $this->abonnement;
     }
@@ -208,4 +225,5 @@ class Users implements PasswordAuthenticatedUserInterface
     {
         return $this->email;
     }
+    public function eraseCredentials() {}
 }

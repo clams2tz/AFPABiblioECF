@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use Faker\Factory;
 use App\Entity\Books;
-use App\Enum\BookCondition;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 
