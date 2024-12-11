@@ -42,6 +42,9 @@ class Books
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'book')]
     private Collection $comment;
 
+    #[ORM\Column(length: 4)]
+    private ?string $release_date = null;
+
     public function __construct()
     {
         $this->comment_id = new ArrayCollection();
@@ -151,6 +154,18 @@ class Books
                 $comment->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getReleaseDate(): ?string
+    {
+        return $this->release_date;
+    }
+
+    public function setReleaseDate(string $release_date): static
+    {
+        $this->release_date = $release_date;
 
         return $this;
     }

@@ -17,6 +17,7 @@ class BooksFixtures extends Fixture
             $books->setTitle($faker->text(30));
             $books->setAuthor($faker->name($gender = null));
             $books->setISBN($faker->ean13());
+            $books->setReleaseDate($faker->year());
             $var = $faker->numberBetween(1,4);
             switch( $var ) {
                 case 1: $books->setBookCondition('Excellent');

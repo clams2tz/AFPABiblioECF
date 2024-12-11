@@ -1,16 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nos Salles de Travail{% endblock %}
+{% block title %}{{ 'salle_title'|trans }}{% endblock %}
 
 {% block body %}
-
-<div class="container">
+<div class="card" style="width: 40rem;">
 {% for salle in salles %}
-    <h2>{{ salle.nom }}</h2>
-    <p>Max. {{ salle.maxCapacity }} personnes</p>
-    <p>Prise(s) electrique disponible:  {{ salle.prisesElectric }}</p>
-    <p>Equipement: {{ salle.wifi }}, {{ salle.projector }}, {{salle.tableau}}, {{salle.television}}, {{ salle.climatisation }} </p> 
-    {# <a href= "{{path('app_salle_de_travail')}}"> #}
+  <img src="{{ asset('/images/' ~ salle.image) }}" alt="{{ salle.nom }}" class="card-img-top">
+  <div class="card-body">
+    <h5 class="card-title">{{ salle.nom }}</h5>
+    <p class="card-text">Max. {{ salle.maxCapacity }} {{ 'maxcap'|trans }}</p>
+    <p>{{ 'plugs'|trans }}:  {{ salle.prisesElectric }}</p>
+    <p>{{ 'equip'|trans }}: 
+        {% if salle.wifi == 1 %} Wifi{% endif %} 
+        {% if salle.projector == 1 %}{{ salle.wifi ? ', ' : '' }}{{ 'equip_projec'|trans }}{% endif %} 
+        {% if salle.tableau == 1 %}{{ salle.wifi or salle.projector ? ', ' : '' }}{{ 'equip_tab'|trans }}{% endif %} 
+        {% if salle.television == 1 %}{{ salle.wifi or salle.projector or salle.tableau ? ', ' : '' }}{{ 'equip_tel'|trans }}{% endif %} 
+        {% if salle.climatisation == 1 %}{{ salle.wifi or salle.projector or salle.tableau or salle.television ? ', ' : '' }}{{ 'equip_clim'|trans }}{% endif %} 
+        </p>
+    <a href="#" class="btn btn-primary">Reserve</a>
+  </div>
 {% endfor %}    
 </div>
+    {# <a href= "{{path('app_salle_de_travail')}}"> #}
 {% endblock %}
