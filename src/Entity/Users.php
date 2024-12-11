@@ -37,7 +37,9 @@ class Users implements PasswordAuthenticatedUserInterface
     private ?int $telephone = null;
 
     #[ORM\Column(type: 'string', enumType: UserRole::class)]
+
     private UserRole $user_role = UserRole::USER;
+
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birthday = null;
@@ -139,12 +141,16 @@ class Users implements PasswordAuthenticatedUserInterface
     /**
      * @return UserRole[]
      */
+
     public function getRoles(): UserRole
+
     {
         return $this->user_role;
     }
 
+
     public function setRoles(UserRole $user_role): self
+
     {
         $this->user_role = $user_role;
 
