@@ -52,7 +52,7 @@ class Users implements PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToOne(targetEntity: Abonnement::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Abonnement $abonnement = null;
+    private Abonnement $abonnement;
 
     public function getId(): ?int
     {
