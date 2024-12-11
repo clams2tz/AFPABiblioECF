@@ -17,6 +17,7 @@ class SalleDeTravailController extends AbstractController
     #[Route('/salle_de_travail', name: 'details_salle')]
     public function show(): Response
     {
+        $salles = $this->sallesRepo->findAll();
         return $this->render('salle_de_travail/index.html.twig', [
             'controller_name' => 'SalleDeTravailController',
             'salles'=> $this->sallesRepo->findAll(),
@@ -26,8 +27,10 @@ class SalleDeTravailController extends AbstractController
     #[Route('/', name: 'app_salle_de_travail')]
     public function index(): Response
     {
+        $salles = $this->sallesRepo->findOne();
         return $this->render('salle_de_travail/index.html.twig', [
             'controller_name' => 'SalleDeTravailController',
+            'salles' => $salles,
         ]);
     }
 }
