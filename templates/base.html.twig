@@ -17,8 +17,9 @@
 
     {% block javascripts %} {% block importmap %}{{
             {{ encore_entry_script_tags('app') }}
-      importmap("app")
-    }}{% endblock %} {% endblock %}
+            importmap("app")
+    }}
+    {% endblock %} {% endblock %}
   </head>
 
   <body>
