@@ -16,30 +16,17 @@ class Abonnement
     #[ORM\Column]
     private ?int $id = null;
 
-
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $IBAN = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $renewal = null;
 
-    /**
-     * @var Collection<int, Users>
-     */
-    #[ORM\OneToMany(targetEntity: Users::class, mappedBy: 'abonnement')]
-    private Collection $user_id;
+    #[ORM\Column(length: 255)]
+    private ?string $subscription_type = null;
 
-    /**
-     * @var Collection<int, users>
-     */
-    #[ORM\OneToMany(targetEntity: users::class, mappedBy: 'user_abonnement')]
-    private Collection $user;
-
-    public function __construct()
-    {
-        $this->user_id = new ArrayCollection();
-        $this->user = new ArrayCollection();
-    }
+    #[ORM\Column]
+    private ?float $price = null;
 
     public function getId(): ?int
     {
@@ -69,42 +56,27 @@ class Abonnement
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Users>
-     */
-    public function getUserId(): Collection
+    
+    public function getSubscriptionType(): ?string
     {
-        return $this->user_id;
+        return $this->subscription_type;
     }
 
-    public function addUserId(Users $userId): static
+    public function setSubscriptionType(string $subscription_type): static
     {
-        if (!$this->user_id->contains($userId)) {
-            $this->user_id->add($userId);
-            $userId->setAbonnement($this);
-        }
-
+        $this->subscription_type = $subscription_type;
         return $this;
     }
 
-    public function removeUserId(Users $userId): static
+    public function getPrice(): ?float
     {
-        if ($this->user_id->removeElement($userId)) {
-            // set the owning side to null (unless already changed)
-            if ($userId->getAbonnement() === $this) {
-                $userId->setAbonnement(null);
-            }
-        }
-
-        return $this;
+        return $this->price;
     }
 
-    /**
-     * @return Collection<int, users>
-     */
-    public function getUser(): Collection
+    public function setPrice(float $price): static
     {
-        return $this->user;
+        $this->price = $price;
+
+        return $this;
     }
 }

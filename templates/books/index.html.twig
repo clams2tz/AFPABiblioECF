@@ -4,6 +4,14 @@
 
 {% block body %}
 <div class="container">
-    {{foreach}}
+    {% for book in books %}
+        <div class="book-card">
+            <img src="" alt="">
+            <h2> {{ book.title }} </h2>
+            <p> {{ book.author }} </p>
+            <a href="{{ path('details_books') }}">Voir détails</a>
+        </div>
+    {% endfor %}
+
 </div>
 {% endblock %}

@@ -3,12 +3,15 @@
 namespace App\Entity;
 
 use App\Enum\UserRole;
-use App\Repository\UsersRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\UsersRepository;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+class Users implements PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,7 +37,9 @@ class Users
     private ?int $telephone = null;
 
     #[ORM\Column(type: 'string', enumType: UserRole::class)]
-    private UserRole $user_role = UserRole::USER; 
+
+    private UserRole $user_role = UserRole::USER;
+
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birthday = null;
@@ -45,9 +50,9 @@ class Users
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
-    #[ORM\ManyToOne]
+    #[ORM\ManyToOne(targetEntity: Abonnement::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?abonnement $abonnement = null;
+    private ?Abonnement $abonnement = null;
 
     public function getId(): ?int
     {
@@ -136,18 +141,21 @@ class Users
     /**
      * @return UserRole[]
      */
-    public function getUserRole(): UserRole
+
+    public function getRoles(): UserRole
+
     {
         return $this->user_role;
     }
 
-    public function setUserRole(UserRole $user_role): self
+
+    public function setRoles(UserRole $user_role): self
+
     {
         $this->user_role = $user_role;
 
         return $this;
     }
-
     public function getBirthday(): ?\DateTimeInterface
     {
         return $this->birthday;
@@ -191,8 +199,13 @@ class Users
         return $this;
     }
 
-    public function getAbonnement(): ?abonnement
+    public function getAbonnement(): ?Abonnement
     {
         return $this->abonnement;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

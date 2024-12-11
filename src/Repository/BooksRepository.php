@@ -16,28 +16,17 @@ class BooksRepository extends ServiceEntityRepository
         parent::__construct($registry, Books::class);
     }
 
-    //    /**
-    //     * @return Books[] Returns an array of Books objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('b.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    public function getBooks(){
+        return $this->findAll();
+    }
 
-    //    public function findOneBySomeField($value): ?Books
-    //    {
-    //        return $this->createQueryBuilder('b')
-    //            ->andWhere('b.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    public function findAvailableBooks(){
+
+        return $this->createQueryBuilder('b')
+            ->andWhere('b.reserved = :reserved')
+            ->setParameter(':reserved', 0)
+            ->getQuery()
+            ->getResult();
+    }
+
 }
