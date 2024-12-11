@@ -1,17 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Livres{% endblock %}
+{% block title %}Livres
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    {% for book in books %}
-        <div class="book-card">
-            <img src="" alt="">
-            <h2> {{ book.title }} </h2>
-            <p> {{ book.author }} </p>
-            <a href="{{ path('details_books') }}">Voir détails</a>
-        </div>
-    {% endfor %}
+	<div class="container">
+		{% for book in books %}
+			<div class="book-card">
+				<div class="book-card">
+					<img src="" alt="">
+					<h2>
+						{{ book.title }}
+					</h2>
+					<p>
+						{{ book.author }}
+					</p>
+					{# <p> {{ book.release_date }} </p> #}
+					<a href="{{ path('details_books', { 'id': book.id }) }}">Voir détails</a>
+					{% if book.reserved == 1 %}
+						<p class="book-available">Déjà réservé</p>
+                        <p>disponible le : {{  }}</p>
+					{% endif %}
 
-</div>
-{% endblock %}
+
+				</div>
+			{% endfor %}
+
+		</div>
+	{% endblock %}

@@ -19,7 +19,7 @@ class BooksController extends AbstractController
     public function index(): Response
     {
 
-        $books = $this->booksRepository->findAvailableBooks();
+        $books = $this->booksRepository->findAll();
 
         return $this->render('books/index.html.twig', [
             'controller_name' => 'BooksController',
@@ -27,7 +27,7 @@ class BooksController extends AbstractController
         ]);
     }
 
-    #[Route('/books/details', name:'details_books')]
+    #[Route('/books/{id}', name:'details_books')]
     public function show(Books $book): Response
     {
         return $this->render('books/details.html.twig', [
