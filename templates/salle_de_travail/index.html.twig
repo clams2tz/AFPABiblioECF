@@ -2,24 +2,36 @@
 
 {% block title %}{{ 'salle_title'|trans }}{% endblock %}
 
+{% block stylesheets %} 
+<link rel="stylesheet" href="{{ asset('css/styles.css') }}"> 
+{% endblock %}
+
 {% block body %}
-<div class="card" style="width: 40rem;">
-{% for salle in salles %}
-  <img src="{{ asset('/images/' ~ salle.image) }}" alt="{{ salle.nom }}" class="card-img-top">
-  <div class="card-body">
-    <h5 class="card-title">{{ salle.nom }}</h5>
-    <p class="card-text">Max. {{ salle.maxCapacity }} {{ 'maxcap'|trans }}</p>
-    <p>{{ 'plugs'|trans }}:  {{ salle.prisesElectric }}</p>
-    <p>{{ 'equip'|trans }}: 
-        {% if salle.wifi == 1 %} Wifi{% endif %} 
-        {% if salle.projector == 1 %}{{ salle.wifi ? ', ' : '' }}{{ 'equip_projec'|trans }}{% endif %} 
-        {% if salle.tableau == 1 %}{{ salle.wifi or salle.projector ? ', ' : '' }}{{ 'equip_tab'|trans }}{% endif %} 
-        {% if salle.television == 1 %}{{ salle.wifi or salle.projector or salle.tableau ? ', ' : '' }}{{ 'equip_tel'|trans }}{% endif %} 
-        {% if salle.climatisation == 1 %}{{ salle.wifi or salle.projector or salle.tableau or salle.television ? ', ' : '' }}{{ 'equip_clim'|trans }}{% endif %} 
-        </p>
-    <a href="#" class="btn btn-primary">Reserve</a>
+<h3 class='intro'>{{ 'salle_title'|trans }}</h3>
+<div class="container mt-5">
+  <div class="row">
+    {% for salle in salles %}
+    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+      <div class="card" style="width: 40rem;">
+        <img src="{{ asset('/images/' ~ salle.image) }}" alt="{{ salle.nom }}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ salle.nom }}</h5>
+          <p class="card-text">Max. {{ salle.maxCapacity }} {{ 'maxcap'|trans }}</p>
+          <p>{{ 'plugs'|trans }}:  {{ salle.prisesElectric }}</p>
+          <p>{{ 'equip'|trans }}: 
+            {% if salle.wifi == 1 %} Wifi{% endif %} 
+            {% if salle.projector == 1 %}{{ salle.wifi ? ', ' : '' }}{{ 'equip_projec'|trans }}{% endif %} 
+            {% if salle.tableau == 1 %}{{ salle.wifi or salle.projector ? ', ' : '' }}{{ 'equip_tab'|trans }}{% endif %} 
+            {% if salle.television == 1 %}{{ salle.wifi or salle.projector or salle.tableau ? ', ' : '' }}{{ 'equip_tel'|trans }}{% endif %} 
+            {% if salle.climatisation == 1 %}{{ salle.wifi or salle.projector or salle.tableau or salle.television ? ', ' : '' }}{{ 'equip_clim'|trans }}{% endif %} 
+          </p>
+          <a href="{{ path('salle_details', {'id':salle.id}) }}" class="btn btn-primary">Reserve</a>
+        </div>  
+      </div>
+    </div>    
+    {% endfor %}  
   </div>
-{% endfor %}    
 </div>
+<p class='outro'>{{ 'salle_avail'|trans }}</p>
     {# <a href= "{{path('app_salle_de_travail')}}"> #}
 {% endblock %}

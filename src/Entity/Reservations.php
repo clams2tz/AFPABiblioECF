@@ -14,10 +14,6 @@ class Reservations
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?users $user = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -28,21 +24,13 @@ class Reservations
     #[ORM\JoinColumn(nullable: false)]
     private ?SalleDeTravail $salle = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getUser(): ?users
-    {
-        return $this->user;
-    }
-
-    public function setUser(?users $user): static
-    {
-        $this->user = $user;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -80,4 +68,22 @@ class Reservations
 
         return $this;
     }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDateCreated(): ?\DateTimeInterface
+    {
+        return $this->date_created;
+    }
+
 }

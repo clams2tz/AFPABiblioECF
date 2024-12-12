@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use id;
 use App\Repository\SalleDeTravailRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class SalleDeTravailController extends AbstractController
 {
@@ -14,23 +15,24 @@ class SalleDeTravailController extends AbstractController
     {
         $this->sallesRepo = $sallesRepo;
     }
-    #[Route('/salle_de_travail', name: 'details_salle')]
-    public function show(): Response
+    #[Route('/salles', name: 'app_salle_de_travail')]
+    public function index(): Response
     {
         $salles = $this->sallesRepo->findAll();
+
         return $this->render('salle_de_travail/index.html.twig', [
             'controller_name' => 'SalleDeTravailController',
-            'salles'=> $this->sallesRepo->findAll(),
+            'salles'=> $salles,
         ]);
     }
 
-    #[Route('/', name: 'app_salle_de_travail')]
-    public function index(): Response
+    #[Route('/salle/{id}', name: 'salle_details')]
+    public function details($id): Response
     {
-        $salles = $this->sallesRepo->findOne();
-        return $this->render('salle_de_travail/index.html.twig', [
-            'controller_name' => 'SalleDeTravailController',
-            'salles' => $salles,
+        $salle = $this->sallesRepo->find($id);
+
+        return $this->render('salle_de_travail/details.html.twig', [
+            'salle' => $salle,
         ]);
     }
 }

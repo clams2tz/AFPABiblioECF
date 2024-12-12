@@ -22,18 +22,12 @@
     <link rel="stylesheet" href="{{ asset('src/styles/app.css') }}">
     {% endblock %}
     
-    {% block javascripts %} {% block importmap %}{{
-            {{ encore_entry_script_tags('app') }}
-            importmap("app")
-    }}
-    {% endblock %} {% endblock %}
-
   </head>
 
   <body>
     {% block header %} {% include 'partials/_header.html.twig' %} {% endblock %}
 
-    <main>{% block body %}TEST{% endblock %}</main>
+    <main>{% block body %}{% endblock %}</main>
 
     {% block footer %} {% include 'partials/_footer.html.twig' %} {% endblock %}
   </body>
