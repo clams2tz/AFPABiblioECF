@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Enum\UserRole;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UsersRepository;
@@ -54,6 +56,17 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     #[ORM\ManyToOne(targetEntity: Abonnement::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
     private Abonnement $abonnement;
+
+    /**
+     * @var Collection<int, Reservations>
+     */
+    #[ORM\OneToMany(targetEntity: Reservations::class, mappedBy: 'user')]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -228,5 +241,4 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     public function eraseCredentials()
     {  // deletes the sensetive user info from memory when the user disconnects //
     }
-
 }
