@@ -16,20 +16,20 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'integer')]
+    protected ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $first_name = null;
+    private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $last_name = null;
+    private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
     #[ORM\Column]
-    private ?int $postal_code = null;
+    private ?int $postalCode = null;
 
     #[ORM\Column(length: 255)]
     private ?string $ville = null;
@@ -39,7 +39,7 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(type: 'string', enumType: UserRole::class)]
 
-    private UserRole $user_role = UserRole::USER;
+    private UserRole $userRole = UserRole::USER;
 
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -69,24 +69,24 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getFirstName(): ?string
     {
-        return $this->first_name;
+        return $this->firstName;
     }
 
-    public function setFirstName(string $first_name): static
+    public function setFirstName(string $firstName): static
     {
-        $this->first_name = $first_name;
+        $this->firstName = $firstName;
 
         return $this;
     }
 
     public function getLastName(): ?string
     {
-        return $this->last_name;
+        return $this->lastName;
     }
 
-    public function setLastName(string $last_name): static
+    public function setLastName(string $lastName): static
     {
-        $this->last_name = $last_name;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -105,12 +105,12 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getPostalCode(): ?int
     {
-        return $this->postal_code;
+        return $this->postalCode;
     }
 
-    public function setPostalCode(int $postal_code): static
+    public function setPostalCode(int $postalCode): static
     {
-        $this->postal_code = $postal_code;
+        $this->postalCode = $postalCode;
 
         return $this;
     }
@@ -164,12 +164,12 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
      */
     public function getRoles(): array
     {
-        return [$this->user_role->value]; 
+        return [$this->userRole->value];
     }
 
-    public function setRoles(UserRole $user_role): self
+    public function setRoles(UserRole $userRole): self
     {
-        $this->user_role = $user_role;
+        $this->userRole = $userRole;
         return $this;
     }
 
@@ -223,7 +223,10 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 
     public function getUserIdentifier(): string
     {
-        return $this->email;
+        return (string) $this->email;
     }
-    public function eraseCredentials() {}
+    public function eraseCredentials()
+    {  // deletes the sensetive user info from memory when the user disconnects //
+    }
+
 }

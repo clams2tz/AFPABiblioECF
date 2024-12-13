@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="{{ asset('src/styles/register.css') }}">
+{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+
+    {{ include('users/_form.html.twig') }}
+
+    <a href="{{ path('app_users_index') }}">back to list</a>
+{% endblock %}
