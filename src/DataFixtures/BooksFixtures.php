@@ -9,31 +9,28 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 
 class BooksFixtures extends Fixture
 {
+    public const BOOK_REFERENCE = 'book_';
+
     public function load(ObjectManager $manager): void
     {
         $faker = Factory::create();
-        for ( $i = 0; $i < 200; $i++ ) {
-            $books = new Books();
-            $books->setTitle($faker->text(30));
-            $books->setAuthor($faker->name($gender = null));
-            $books->setISBN($faker->ean13());
-            $books->setReleaseDate($faker->year());
-            $var = $faker->numberBetween(1,4);
-            switch( $var ) {
-                case 1: $books->setBookCondition('Excellent');
-                break;
-                case 2: $books->setBookCondition('Good'); 
-                break;
-                case 3: $books->setBookCondition('Fair');
-                break;
-                case 4: $books->setBookCondition('Poor');
-                break;
-            }
-            $books->setSummary($faker->realText($maxNbChars = 500, $indexSize =2));
-            $books->setReserved($faker->boolean()); 
-            $manager->persist($books);
 
+        for ($i = 0; $i < 200; $i++) {
+            $book = new Books();
+            $book->setTitle($faker->text(30));
+            $book->setAuthor($faker->name());
+            $book->setISBN($faker->ean13());
+            $book->setReleaseDate($faker->year());
+            $book->setBookCondition($faker->randomElement(['Excellent', 'Good', 'Fair', 'Poor']));
+            $book->setSummary($faker->realText(500));
+            $book->setReserved($faker->boolean());
+
+            $manager->persist($book);
+
+            // Ajoutez une référence
+            $this->addReference(self::BOOK_REFERENCE . $i, $book);
         }
+
         $manager->flush();
     }
 }
