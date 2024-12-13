@@ -6,6 +6,7 @@ use App\Entity\Books;
 use App\Entity\Comments;
 use App\Form\BookRating;
 use App\Repository\BooksRepository;
+use App\Repository\LoansRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,24 +16,29 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BooksController extends AbstractController
 {
     private $booksRepository;
-    public function __construct(BooksRepository $booksRepository){
+    private $loansRepository;
+    public function __construct(BooksRepository $booksRepository, LoansRepository $loansRepository){
         $this->booksRepository = $booksRepository;
+        $this->loansRepository = $loansRepository;
     }
 
     #[Route('/books', name: 'index_books')]
     public function index(): Response
     {
-        $books = $this->booksRepository->getBooks();
+        $books = $this->booksRepository->findAll();
+        $loans = $this->loansRepository->findAll();
 
         return $this->render('books/index.html.twig', [
             'books'=> $books,
+            'loans'=> $loans,
         ]);
     }
 
     #[Route('/books/{id}', name:'details_books')]
     public function show(Request $request, EntityManagerInterface $entityManager, Books $book): Response
     {
-        $user = $this->getUser(); 
+        $user = $this->getUser();
+         
         if (!$user) {
             throw $this->createAccessDeniedException('You must be logged in to leave a comment.');
         }

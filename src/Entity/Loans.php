@@ -14,11 +14,19 @@ class Loans
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
-    private ?\DateTimeImmutable $borrow_date = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $due_date = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Books $book = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $borrowDate = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dueDate = null;
 
     #[ORM\Column]
     private ?bool $extension = null;
@@ -26,39 +34,55 @@ class Loans
     #[ORM\Column]
     private ?bool $returned = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Users $user = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?books $book = null;
-
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBorrowDate(): ?\DateTimeImmutable
+    public function getUser(): ?Users
     {
-        return $this->borrow_date;
+        return $this->user;
     }
 
-    public function setBorrowDate(\DateTimeImmutable $borrow_date): static
+    public function setUser(?Users $user): static
     {
-        $this->borrow_date = $borrow_date;
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getBook(): ?Books
+    {
+        return $this->book;
+    }
+
+    public function setBook(?Books $book): static
+    {
+        $this->book = $book;
+
+        return $this;
+    }
+
+    public function getBorrowDate(): ?\DateTimeInterface
+    {
+        return $this->borrowDate;
+    }
+
+    public function setBorrowDate(\DateTimeInterface $borrowDate): static
+    {
+        $this->borrowDate = $borrowDate;
 
         return $this;
     }
 
     public function getDueDate(): ?\DateTimeInterface
     {
-        return $this->due_date;
+        return $this->dueDate;
     }
 
-    public function setDueDate(\DateTimeInterface $due_date): static
+    public function setDueDate(\DateTimeInterface $dueDate): static
     {
-        $this->due_date = $due_date;
+        $this->dueDate = $dueDate;
 
         return $this;
     }
@@ -86,29 +110,4 @@ class Loans
 
         return $this;
     }
-
-    public function getUser(): ?Users
-    {
-        return $this->user;
-    }
-
-    public function setUser(?Users $user): static
-    {
-        $this->user = $user;
-
-        return $this;
-    }   
-
-    public function getBook(): ?books
-    {
-        return $this->book;
-    }
-
-    public function setBook(?books $book): static
-    {
-        $this->book = $book;
-
-        return $this;
-    }
-
 }
