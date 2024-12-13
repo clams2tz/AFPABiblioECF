@@ -17,6 +17,7 @@ class BooksRepository extends ServiceEntityRepository
     }
 
     public function getBooks(){
+        
         return $this->findAll();
     }
 

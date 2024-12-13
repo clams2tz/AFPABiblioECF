@@ -97,7 +97,7 @@ class Loans
         $this->user = $user;
 
         return $this;
-    }
+    }   
 
     public function getBook(): ?books
     {
