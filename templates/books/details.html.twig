@@ -1,14 +1,26 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} 
 
 {% block title %}{{ book.title }}{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('src/styles/starability.css') }}" />
+{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
 {% block body %}
 <div class="container">
-    <img src="" alt="" class="image">
-    <h2 class="title"> {{book.title}} </h2>
-    <p class="author"> {{book.author}} </p>
-    <p class="pub-date"> {{book.releaseDate}} </p>
-    <p class="resume"> {{book.summary}} </p>
-    <p class="condition"> {{book.bookCondition}} </p>
+  <img src="" alt="" class="image" />
+  <h2 class="title">{{ book.title }}</h2>
+  <p class="author">{{ book.author }}</p>
+  <p class="pub-date">{{ book.releaseDate }}</p>
+  <p class="resume">{{ book.summary }}</p>
+  <p class="condition">
+    Book Condition <strong>{{ book.bookCondition }}</strong>
+  </p>
+
+    {{ include('users/_form.html.twig', {'button_label': 'Submit'}) }}
 </div>
 {% endblock %}

@@ -47,7 +47,7 @@ class Books
 
     public function __construct()
     {
-        $this->comment_id = new ArrayCollection();
+        // $this->comment_id = new ArrayCollection();
         $this->comment = new ArrayCollection();
     }
 
