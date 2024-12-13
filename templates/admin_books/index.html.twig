@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books index{% endblock %}
+
+{% block body %}
+    <h1>Books index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>BookCondition</th>
+                <th>Summary</th>
+                <th>Reserved</th>
+                <th>ReleaseDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.Author }}</td>
+                <td>{{ book.ISBN }}</td>
+                <td>{{ book.bookCondition }}</td>
+                <td>{{ book.summary }}</td>
+                <td>{{ book.reserved ? 'Yes' : 'No' }}</td>
+                <td>{{ book.releaseDate }}</td>
+                <td>
+                    <a href="{{ path('app_admin_books_show', {'id': book.id}) }}">show</a>
+                    <a href="{{ path('app_admin_books_edit', {'id': book.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_books_new') }}">Create new</a>
+{% endblock %}
