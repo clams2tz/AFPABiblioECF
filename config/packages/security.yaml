@@ -1,35 +1,35 @@
 security:
-    # Password hashing configuration
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+  # Password hashing configuration
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
 
-    # User providers
-    providers:
-        app_user_provider:
-            entity:
-                class: App\Entity\Users
-                property: email
+  # User providers
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\Users
+        property: email
 
-    # Firewalls
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+  # Firewalls
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-        main: # Your main firewall
-            lazy: true
-            provider: app_user_provider
-            custom_authenticator: App\Security\LoginAuthAuthenticator
-            logout:
-                path: app_logout
-                target: app_login
-            remember_me:
-                secret: '%kernel.secret%'
-                lifetime: 604800
-                path: /
-            entry_point: App\Security\LoginAuthAuthenticator
+    main: # Your main firewall
+      lazy: true
+      provider: app_user_provider
+      custom_authenticator: App\Security\LoginAuthAuthenticator
+      logout:
+        path: app_logout
+        target: app_login
+      remember_me:
+        secret: "%kernel.secret%"
+        lifetime: 604800
+        path: /
+      entry_point: App\Security\LoginAuthAuthenticator
 
-    # Access control
-    access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+  # Access control
+  access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/profile, roles: ROLE_USER }

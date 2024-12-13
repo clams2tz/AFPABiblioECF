@@ -15,7 +15,7 @@
 					<p>
 						{{ book.author }}
 					</p>
-					{# <p> {{ book.release_date }} </p> #}
+					<p> {{ book.releaseDate }} </p>
 					<a href="{{ path('details_books', { 'id': book.id }) }}">Voir détails</a>
 					{% if book.reserved == 1 %}
 						<p class="book-available">Déjà réservé</p>

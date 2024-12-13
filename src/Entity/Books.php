@@ -28,7 +28,7 @@ class Books
     private ?string $ISBN = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $book_condition;
+    private ?string $bookCondition;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $summary = null;
@@ -43,11 +43,11 @@ class Books
     private Collection $comment;
 
     #[ORM\Column(length: 4)]
-    private ?string $release_date = null;
+    private ?string $releaseDate = null;
 
     public function __construct()
     {
-        $this->comment_id = new ArrayCollection();
+        // $this->comment_id = new ArrayCollection();
         $this->comment = new ArrayCollection();
     }
 
@@ -94,12 +94,12 @@ class Books
 
     public function getBookCondition(): ?string
     {
-        return $this->book_condition;
+        return $this->bookCondition;
     }
 
-    public function setBookCondition(String $book_condition): Self
+    public function setBookCondition(String $bookCondition): Self
     {
-        $this->book_condition = $book_condition;
+        $this->bookCondition = $bookCondition;
 
         return $this;
     }
@@ -160,12 +160,12 @@ class Books
 
     public function getReleaseDate(): ?string
     {
-        return $this->release_date;
+        return $this->releaseDate;
     }
 
-    public function setReleaseDate(string $release_date): static
+    public function setReleaseDate(string $releaseDate): static
     {
-        $this->release_date = $release_date;
+        $this->releaseDate = $releaseDate;
 
         return $this;
     }
