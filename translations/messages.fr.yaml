@@ -6,4 +6,7 @@ equip_projec: 'Projecteur'
 equip_tab: 'Tableau'
 equip_tel: 'Télévision'
 equip_clim: 'Climatisation'
-salle_avail: 'Disponible pour vos réunions d''une durée de 1 à 4 heures, réservez dès aujourd''hui'
+salle_avail: 'Disponible pour vos réunions d''une durée de 1 à 4 heures, réservez dès aujourd''hui.'
+
+
+reserve_me: 'Reservation de la salle {{ salle.nom }}'
