@@ -16,6 +16,21 @@ class ReservationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservations::class);
     }
 
+    public function save(Reservations $reservation, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($reservation);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Reservations $reservation, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($reservation);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 //    /**
 //     * @return Reservations[] Returns an array of Reservations objects
 //     */

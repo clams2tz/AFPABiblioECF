@@ -25,14 +25,4 @@ class SalleDeTravailController extends AbstractController
             'salles'=> $salles,
         ]);
     }
-
-    #[Route('/salle/{id}', name: 'salle_details')]
-    public function details($id): Response
-    {
-        $salle = $this->sallesRepo->find($id);
-
-        return $this->render('salle_de_travail/details.html.twig', [
-            'salle' => $salle,
-        ]);
-    }
 }

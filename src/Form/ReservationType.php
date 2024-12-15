@@ -3,37 +3,41 @@
 namespace App\Form;
 
 use App\Entity\Reservations;
-use App\Entity\SalleDeTravail;
-use App\Entity\Users;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ReservationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date', null, [
+            ->add('startTime', DateTimeType::class, [
                 'widget' => 'single_text',
+                'label' => 'Start Time',
+                'input' => 'datetime',
+                'attr' => ['class' => 'datetime-picker'],
             ])
-            ->add('duree')
-            ->add('salle', EntityType::class, [
-                'class' => SalleDeTravail::class,
-                'choice_label' => 'id',
+            ->add('endTime', DateTimeType::class, [
+                'widget' => 'single_text',
+                'label' => 'End Time',
+                'input' => 'datetime',
+                'attr' => ['class' => 'datetime-picker'],
             ])
-            ->add('user', EntityType::class, [
-                'class' => Users::class,
-                'choice_label' => 'id',
-            ])
-        ;
+            ->add('submit', SubmitType::class, [
+                'label' => 'Create Reservervation',
+                'attr' => ['class' => 'btn-primary'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Reservations::class,
+
         ]);
     }
 }

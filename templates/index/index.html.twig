@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %} 
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('src/styles/app.css') }}"> 
+{% endblock %}
+
     {% block title %}
         La Bibliotheque
     {% endblock %}
@@ -17,7 +22,7 @@
 
         <container class="heading">
 
-            <h1>La Bibliotheque !!!</h1>
+            <h1>La Bibliotheque</h1>
 
             <h4>Votre Books & Business Bibliotheque</h6>
         </container>
