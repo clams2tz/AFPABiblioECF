@@ -3,35 +3,52 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<form method="post">
+<div class="login-container">
+  <div class="login-card">
+    <!-- Display errors if any -->
     {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+      <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
     {% endif %}
 
+    <!-- Already logged in message -->
     {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
+      <div class="alert alert-info">
+        You are logged in as {{ app.user.userIdentifier }},
+        <a href="{{ path('app_logout') }}">Logout</a>
+      </div>
     {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-    <label for="inputEmail">Email</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">Password</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+    <!-- Login Form -->
+    <form method="post" class="login-form">
+      <h1 class="login-title">Sign In</h1>
 
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
+      <div class="form-group">
+        <label for="inputEmail">Email</label>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" placeholder="Enter your email" autocomplete="email" required autofocus>
+      </div>
 
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> Remember me
-        </label>
-    </div>
+      <div class="form-group">
+        <label for="inputPassword">Password</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" placeholder="Enter your password" autocomplete="current-password" required>
+      </div>
 
-    <button class="btn btn-lg btn-primary" type="submit">
-        Sign in
-    </button>
-</form>
+      <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+      <!-- Remember me checkbox -->
+      <div class="form-group remember-me">
+        <input type="checkbox" name="_remember_me" id="rememberMe">
+        <label for="rememberMe">Remember me</label>
+      </div>
+      
+
+      <!-- Submit button -->
+      <button type="submit" class="btn-submit">Sign in</button>
+
+      <!-- Register link -->
+      <div class="register-link">
+        <p>Don't have an account? <a href="{{ path('app_users_register') }}">Register here</a></p>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}

@@ -15,7 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class BooksController extends AbstractController
 {
     private $booksRepository;
-    public function __construct(BooksRepository $booksRepository){
+    public function __construct(BooksRepository $booksRepository) {
         $this->booksRepository = $booksRepository;
     }
 
@@ -51,7 +51,6 @@ class BooksController extends AbstractController
     
             return $this->redirectToRoute('details_books', ['id' => $book->getId()]);
         }
-
 
         return $this->render('books/details.html.twig', [
             'book'=> $book,

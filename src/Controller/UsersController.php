@@ -2,13 +2,18 @@
 
 namespace App\Controller;
 
-use App\Entity\Abonnement;
 use App\Entity\Users;
+use App\Enum\UserRole;
 use App\Form\UsersType;
+use App\Entity\Abonnement;
+use App\Repository\LoansRepository;
+use App\Repository\ReservationsRepository;
+use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -17,13 +22,14 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/users')]
 final class UsersController extends AbstractController
 {
-    // #[Route(name: 'app_users_index', methods: ['GET'])]
-    // public function index(UsersRepository $usersRepository): Response
-    // {
-    //     return $this->render('users/index.html.twig', [
-    //         'users' => $usersRepository->findAll(),
-    //     ]);
-    // }
+    #[Route(name: 'app_users_index', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function index(UsersRepository $usersRepository): Response
+    {
+        return $this->render('users/index.html.twig', [
+            'users' => $usersRepository->findAll(),
+        ]);
+    }
 
     /////////// ADD user (register)
     #[Route('/register', name: 'app_users_register', methods: ['GET', 'POST'])]
@@ -44,19 +50,19 @@ final class UsersController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
-            
-            $chosenAbonnement = $form->get('subscription_type')->getData();
+
+            $chosenAbonnement = $form->get('subscriptionType')->getData();
             $abonnement->setSubscriptionType($chosenAbonnement);
-            
+
             $monthlyCost = 23.99;
-            if($chosenAbonnement === 'annual') {
+            if ($chosenAbonnement === 'annual') {
                 $abonnement->setPrice($monthlyCost * 12);
             } else {
                 $abonnement->setPrice($monthlyCost);
             }
             $abonnement->setRenewal(new \DateTime());
-            
-            
+
+
             $entityManager->persist($abonnement);
             $user->setAbonnement($abonnement);  // to inject data to abonnement table through user table \\
             $entityManager->persist($user);
@@ -74,14 +80,20 @@ final class UsersController extends AbstractController
 
     /////////////////// user dashboard 
     #[Route('/profile', name: 'app_users_show', methods: ['GET'])]
-    public function show(): Response
+    public function show(LoansRepository $loansRepository, ReservationsRepository $resevationsRepository): Response
     {
         $user = $this->getUser();
         if (!$user) {
             throw $this->createAccessDeniedException('You must be logged in to access this page.');
         }
+
+        $loans = $loansRepository->findByUser($user);
+        $reservations = $resevationsRepository->findByUser($user);
+
         return $this->render('users/show.html.twig', [
             'user' => $user,
+            'loans' => $loans,
+            'reservations' => $reservations,
         ]);
     }
 
@@ -92,6 +104,9 @@ final class UsersController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $userRoleEnum = UserRole::from($form->get('roles')->getData());
+            $user->setRoles($userRoleEnum);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_users_show');
@@ -99,7 +114,7 @@ final class UsersController extends AbstractController
 
         return $this->render('users/edit.html.twig', [
             'user' => $user,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -107,11 +122,11 @@ final class UsersController extends AbstractController
     public function delete(Request $request, Users $user, EntityManagerInterface $entityManager): Response
     {
         // if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->getPayload()->getString('_token'))) {
-        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_index', [], Response::HTTP_SEE_OTHER);
-    }    
+    }
 }

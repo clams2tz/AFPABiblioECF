@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Users;
+use App\Enum\UserRole;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,17 +19,20 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UsersType extends AbstractType
 {
+
+    
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        
         $builder
-            ->add('first_name', TextType::class, [
+            ->add('firstName', TextType::class, [
                 'constraints' => [
                     new NotBlank([
                         'message' => 'prenom cannot be empty'
                     ]),
                 ],
             ])
-            ->add('last_name', TextType::class, [
+            ->add('lastName', TextType::class, [
                 'constraints' => [
                     new NotBlank([
                         'message' => 'nom cannot be empty'
@@ -49,7 +53,7 @@ class UsersType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('postal_code', TextType::class, [])
+            ->add('postalCode', TextType::class, [])
             ->add('ville', TextType::class, [])
             ->add('telephone', TextType::class, [])
             ->add('email', EmailType::class, [
@@ -84,13 +88,23 @@ class UsersType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('subscription_type', ChoiceType::class, [
+            ->add('subscriptionType', ChoiceType::class, [
                 'choices'  => [
-                    'Annually (10% Discount)' => 'annual',
-                    'Monthly (€23.99)' => 'monthly',
+                    'Annually (10% Discount 287.88€)' => 'annual',
+                    'Monthly (23.99€)' => 'monthly',
                 ],
                 'label' => 'Subscription Type',
                 'mapped' => false,
+            ]);
+            $builder->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'User' => UserRole::USER->value,
+                    'Admin' => UserRole::ADMIN->value,
+                ],
+                'mapped' => false,
+                'expanded' => true, 
+                'multiple' => false, 
+                'label' => 'Role',
             ])
         ;
     }

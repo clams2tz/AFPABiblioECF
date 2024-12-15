@@ -24,7 +24,7 @@ class Reservations
     #[ORM\JoinColumn(nullable: false)]
     private ?SalleDeTravail $salle = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $user = null;
 
@@ -79,11 +79,6 @@ class Reservations
         $this->user = $user;
 
         return $this;
-    }
-
-    public function getDateCreated(): ?\DateTimeInterface
-    {
-        return $this->date_created;
     }
 
 }

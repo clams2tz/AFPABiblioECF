@@ -1,5 +1,88 @@
 <header>
-    <nav>
-        {% include 'partials/_navbar.html.twig' %}
-    </nav>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <!-- Brand Logo -->
+      <a class="navbar-brand" href="#">📚 Library</a>
+
+      <!-- Toggle Button for Mobile -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navigation Links -->
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">My Books</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Reserved Rooms</a>
+          </li>
+        </ul>
+
+        <!-- Search Bar -->
+        <form class="d-flex me-3" role="search" method="get" action="#">
+          <input
+            class="form-control me-2"
+            type="search"
+            name="q"
+            placeholder="Search for books..."
+            aria-label="Search"
+          />
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+
+        <!-- Dropdown: Welcome User -->
+        <!-- User Dropdown or Sign In Button -->
+        {% if app.user %}
+        <div class="dropdown dropdown-hover">
+          <a
+            class="btn btn-secondary dropdown-toggle"
+            href="#"
+            role="button"
+            aria-expanded="false"
+          >
+            Welcome, {{ app.user.firstName|default('Guest') }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <a class="dropdown-item" href="{{ path('app_users_show') }}"
+                >My Profile</a
+              >
+            </li>
+            <li>
+              <hr class="dropdown-divider" />
+            </li>
+            <li>
+              <a
+                class="dropdown-item text-danger"
+                href="{{ path('app_logout') }}"
+                >Logout</a
+              >
+            </li>
+          </ul>
+        </div>
+        {% else %}
+        <!-- Sign In Button for Guests -->
+        <a href="{{ path('app_login') }}" class="btn sign-in"
+          >Sign In</a
+        >
+        <a href="{{ path('app_users_register') }}" class="btn register"
+          >Register</a
+        >
+        {% endif %}
+      </div>
+    </div>
+  </nav>
 </header>

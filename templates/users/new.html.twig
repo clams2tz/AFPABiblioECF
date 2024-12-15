@@ -2,14 +2,12 @@
 
 {% block title %}Register{% endblock %}
 
-{% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('src/styles/register.css') }}">
-{% endblock %}
 
 {% block body %}
     <h1>Register</h1>
 
-    {{ include('users/_form.html.twig') }}
+   {{ include('users/_form.html.twig') }} 
+   <script src="{{ asset('app.js') }}"></script>
 
-    <a href="{{ path('app_users_index') }}">back to list</a>
+    <a href="{{ path('index_books') }}">back to list</a>
 {% endblock %}

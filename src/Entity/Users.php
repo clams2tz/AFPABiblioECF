@@ -41,7 +41,7 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
 
     #[ORM\Column(type: 'string', enumType: UserRole::class)]
 
-    private UserRole $userRole = UserRole::USER;
+    private UserRole $roles = UserRole::USER;
 
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
@@ -54,8 +54,8 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
     private ?string $password = null;
 
     #[ORM\ManyToOne(targetEntity: Abonnement::class, cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private Abonnement $abonnement;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Abonnement $abonnement = null;
 
     /**
      * @var Collection<int, Reservations>
@@ -73,12 +73,12 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
         return $this->id;
     }
 
-    public function setId(int $id): static
-    {
-        $this->id = $id;
+    // public function setId(int $id): static
+    // {
+    //     $this->id = $id;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getFirstName(): ?string
     {
@@ -177,12 +177,12 @@ class Users implements PasswordAuthenticatedUserInterface, UserInterface
      */
     public function getRoles(): array
     {
-        return [$this->userRole->value];
+        return [$this->roles->value];
     }
 
-    public function setRoles(UserRole $userRole): self
+    public function setRoles(UserRole $roles): self
     {
-        $this->userRole = $userRole;
+        $this->roles = $roles;
         return $this;
     }
 
