@@ -21,13 +21,4 @@ class BooksRepository extends ServiceEntityRepository
         return $this->findAll();
     }
 
-    public function findAvailableBooks(){
-
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.reserved = :reserved')
-            ->setParameter(':reserved', 0)
-            ->getQuery()
-            ->getResult();
-    }
-
 }

@@ -36,6 +36,10 @@ class Books
     #[ORM\Column(nullable: true)]
     private ?bool $reserved = null;
 
+
+
+
+    
     /**
      * @var Collection<int, Comments>
      */
@@ -44,7 +48,7 @@ class Books
 
     #[ORM\Column(length: 4)]
     private ?string $releaseDate = null;
-
+    
     public function __construct()
     {
         // $this->comment_id = new ArrayCollection();

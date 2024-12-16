@@ -15,56 +15,44 @@ class Reservations
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
+    private ?\DateTimeInterface $startTime = null;
 
-    #[ORM\Column]
-    private ?int $duree = null;
-
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?SalleDeTravail $salle = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $endTime = null;
 
     #[ORM\ManyToOne]
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $user = null;
+
+    #[ORM\ManyToOne( cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SalleDeTravail $salle = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getStartTime(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->startTime;
     }
 
-    public function setDate(\DateTimeInterface $date): static
+    public function setStartTime(\DateTimeInterface $startTime): self
     {
-        $this->date = $date;
+        $this->startTime = $startTime;
 
         return $this;
     }
 
-    public function getDuree(): ?int
+    public function getEndTime(): ?\DateTimeInterface
     {
-        return $this->duree;
+        return $this->endTime;
     }
 
-    public function setDuree(int $duree): static
+    public function setEndTime(\DateTimeInterface $endTime): self
     {
-        $this->duree = $duree;
-
-        return $this;
-    }
-
-    public function getSalle(): ?SalleDeTravail
-    {
-        return $this->salle;
-    }
-
-    public function setSalle(?SalleDeTravail $salle): static
-    {
-        $this->salle = $salle;
+        $this->endTime = $endTime;
 
         return $this;
     }
@@ -74,11 +62,23 @@ class Reservations
         return $this->user;
     }
 
-    public function setUser(?Users $user): static
+    public function setUser(?Users $user): self
     {
         $this->user = $user;
 
         return $this;
     }
 
+    public function getSalle(): ?SalleDeTravail
+    {
+        return $this->salle;
+    }
+
+    public function setSalle(?SalleDeTravail $salle): self
+    {
+
+        $this->salle = $salle;
+
+        return $this;
+    }
 }

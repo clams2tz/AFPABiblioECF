@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SalleDeTravailRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalleDeTravailRepository::class)]
@@ -17,7 +19,7 @@ class SalleDeTravail
     private ?string $nom = null;
 
     #[ORM\Column]
-    private ?int $max_capacity = null;
+    private ?int $maxCapacity = null;
 
     #[ORM\Column]
     private ?bool $wifi = null;
@@ -29,7 +31,7 @@ class SalleDeTravail
     private ?bool $tableau = null;
 
     #[ORM\Column]
-    private ?int $prises_electric = null;
+    private ?int $prisesElectric = null;
 
     #[ORM\Column]
     private ?bool $television = null;
@@ -39,6 +41,40 @@ class SalleDeTravail
 
     #[ORM\Column(length: 255)]
     private ?string $image = null;
+
+    #[ORM\OneToMany(mappedBy: 'salle', targetEntity: Reservations::class, orphanRemoval: true)]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservations $reservation): self
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations[] = $reservation;
+            $reservation->setSalle($this);
+        }
+
+        return $this;    
+    }
+
+    public function removeReservation(Reservations $reservation): self
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getSalle() === $this) {
+                $reservation->setSalle(null);
+            }
+        }
+
+        return $this;
+    }
 
     public function getId(): ?int
     {
@@ -59,12 +95,12 @@ class SalleDeTravail
 
     public function getMaxCapacity(): ?int
     {
-        return $this->max_capacity;
+        return $this->maxCapacity;
     }
 
-    public function setMaxCapacity(int $max_capacity): static
+    public function setMaxCapacity(int $maxCapacity): static
     {
-        $this->max_capacity = $max_capacity;
+        $this->maxCapacity = $maxCapacity;
 
         return $this;
     }
@@ -107,12 +143,12 @@ class SalleDeTravail
 
     public function getPrisesElectric(): ?int
     {
-        return $this->prises_electric;
+        return $this->prisesElectric;
     }
 
-    public function setPrisesElectric(int $prises_electric): static
+    public function setPrisesElectric(int $prisesElectric): static
     {
-        $this->prises_electric = $prises_electric;
+        $this->prisesElectric = $prisesElectric;
 
         return $this;
     }

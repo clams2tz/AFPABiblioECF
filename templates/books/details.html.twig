@@ -1,25 +1,51 @@
-{% extends 'base.html.twig' %} 
+{% extends 'base.html.twig' %}
 
-{% block title %}{{ book.title }}{% endblock %}
-
-{% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('src/styles/starability.css') }}" />
+{% block title %}
+    {{ book.title }}
 {% endblock %}
 
-{% block javascripts %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('src/styles/starability.css') }}"/>
 {% endblock %}
 
 {% block body %}
-<div class="container">
-  <img src="" alt="" class="image" />
-  <h2 class="title">{{ book.title }}</h2>
-  <p class="author">{{ book.author }}</p>
-  <p class="pub-date">{{ book.releaseDate }}</p>
-  <p class="resume">{{ book.summary }}</p>
-  <p class="condition">
-    Book Condition <strong>{{ book.bookCondition }}</strong>
-  </p>
-    {{ include('users/_form.html.twig', {'button_label': 'Submit'}) }}
-</div>
+    <div class="container">
+        <img src="" alt="" class="image"/>
+        <h2 class="title">{{ book.title }}</h2>
+        <p class="author">{{ book.author }}</p>
+        <p class="pub-date">{{ book.releaseDate }}</p>
+        <p class="resume">{{ book.summary }}</p>
+        <p class="condition">
+            Book Condition
+            <strong>{{ book.bookCondition }}</strong>
+        </p>
+
+        {% set isReserved = false %}
+        {% set availabilityDate = null %}
+        {% set reservedByYou = false %}
+
+        {% for loan in loans %}
+            {% if loan.book.id == book.id %}
+                {% if loan.returned == false and loan.dueDate > 'now'|date('Y-m-d H:i:s') %}
+                    {% set isReserved = true %}
+                    {% set availabilityDate = loan.dueDate %}
+                    {% if loan.user.id == user.id %}
+                        {% set reservedByYou = true %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        {% if reservedByYou %}
+            <p class="book-available">Vous avez déjà réservé ce livre</p>
+            <p>A rendre le : {{ availabilityDate|date('d/m/Y') }}</p>
+        {% elseif isReserved %}
+            <p class="book-available">Déjà réservé</p>
+            <p>Disponible le : {{ availabilityDate|date('d/m/Y') }}</p>
+        {% else %}
+            <p class="book-available">Disponible</p>
+            <a href="{{ path('reserve_book', { 'id': book.id }) }}" class="btn btn-primary">Réserver</a>
+        {% endif %}
+    </div>
 {% endblock %}

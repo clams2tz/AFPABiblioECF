@@ -16,15 +16,21 @@ class ReservationsRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservations::class);
     }
 
-    public function findByUser($user)
+    public function save(Reservations $reservation, bool $flush = false): void
     {
-        return $this->createQueryBuilder('r')
-            ->where('r.user = :user')
-            ->setParameter('user', $user)
-            ->getQuery()
-            ->getResult();
+        $this->getEntityManager()->persist($reservation);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
     }
 
+    public function remove(Reservations $reservation, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($reservation);
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 //    /**
 //     * @return Reservations[] Returns an array of Reservations objects
 //     */
