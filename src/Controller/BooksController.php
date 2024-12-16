@@ -44,9 +44,10 @@ class BooksController extends AbstractController
     #[Route('/books/{id}', name:'details_books')]
     public function show(Request $request, EntityManagerInterface $entityManager, Books $book): Response
     {
-        $user = $this->getUser();
+        $bookId = $book->getId();
+        $user = $this->getUser()->getId();
         $loans = $this->loansRepository->findAll();
-        // $loanUser = $this->loansRepository->findLastLoanByUser($user->id);
+        // $loanUser = $this->loansRepository->findLastLoanByUser($user, $bookId);
     
         $comment = new Comments();
         $form = $this->createForm(BookRating::class, $comment);  // first param: which form, second param: to be mapped to which table in database

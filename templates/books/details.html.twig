@@ -31,14 +31,14 @@
                 {% if loan.returned == false and loan.dueDate > 'now'|date('Y-m-d H:i:s') %}
                     {% set isReserved = true %}
                     {% set availabilityDate = loan.dueDate %}
-                    {% if loan.user.id == user.id %}
-                        {% set reservedByYou = true %}
+                    {# {% if loan.user.id == user.id %} #}
+                        {# {% set reservedByYou = true %} #}
                     {% if loan.extension == true %}
                         {% set extended = true %}
                     {% endif %}
                     {% endif %}
                 {% endif %}
-            {% endif %}
+            {# {% endif %} #}
         {% endfor %}
 
         {% if reservedByYou %}
