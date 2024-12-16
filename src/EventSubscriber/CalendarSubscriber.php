@@ -1,33 +1,43 @@
-<?php 
-
+<?php
 namespace App\EventSubscriber;
 
+use App\Repository\ReservationsRepository;
 use CalendarBundle\Entity\Event;
-use CalendarBundle\Event\SetDataEvent;
+use CalendarBundle\Event\CalendarEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class CalendarSubscriber implements EventSubscriberInterface
 {
-    public static function getSubscribedEvents()
+    private $reservationRepository;
+
+    public function __construct(ReservationsRepository $reservationRepository)
+    {
+        $this->reservationRepository = $reservationRepository;
+    }
+
+    public static function getSubscribedEvents(): array
     {
         return [
-            SetDataEvent::class => 'onCalendarSetData',
+            CalendarEvent::class => 'onCalendarEventSetData',
         ];
     }
 
-    public function onCalendarSetData(SetDataEvent $setDataEvent)
+    public function onCalendarEventSetData(CalendarEvent $calendarEvent): void
     {
-        $start = $setDataEvent->getStart();
-        $end = $setDataEvent->getEnd();
-        $filters = $setDataEvent->getFilters();
+        $start = $calendarEvent->getStart();
+        $end = $calendarEvent->getEnd();
+        $filters = $calendarEvent->getFilters();
 
-        // Example: Adding a sample event
-        $setDataEvent->addEvent(new Event(
-            'Sample Event',
-            new \DateTime('2024-12-20 10:00:00'),
-            new \DateTime('2024-12-20 12:00:00')
-        ));
+        $reservations = $this->reservationRepository->findByDates($start, $end);
 
-        // Add more events as needed
+        foreach ($reservations as $reservation) {
+            $event = new Event(
+
+                $reservation->getStartTime(),
+                $reservation->getEndTime()
+            );
+
+            $calendarEvent->addEvent($event);
+        }
     }
 }

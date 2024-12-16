@@ -31,20 +31,21 @@ class ReservationsRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
-//    /**
-//     * @return Reservations[] Returns an array of Reservations objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+   /**
+    * @return Reservations[] Returns an array of Reservations objects
+    */
+   public function findByDates(\DateTimeInterface $start, \DateTimeInterface $end)
+   {
+       return $this->createQueryBuilder('r')
+           ->andWhere('r.startTime >= :start')
+           ->andWhere('r.endTime <= :end')
+           ->setParameter('start', $start)
+           ->setParameter('end', $end)
+           ->orderBy('r.startTime', 'ASC')
+           ->getQuery()
+           ->getResult()
+       ;
+   }
 
 //    public function findOneBySomeField($value): ?Reservations
 //    {
