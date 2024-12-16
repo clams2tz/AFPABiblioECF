@@ -16,13 +16,15 @@ class LoansRepository extends ServiceEntityRepository
         parent::__construct($registry, Loans::class);
     }
 
-    public function findByUser($user)
+    public function findLastLoanByUser(int $userId): ?Loans
     {
         return $this->createQueryBuilder('l')
-            ->where('l.user = :user')
-            ->setParameter('user', $user)
+            ->andWhere('l.user = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('l.dueDate', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
 
     //    /**

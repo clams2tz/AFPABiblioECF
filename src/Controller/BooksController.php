@@ -11,9 +11,12 @@ use App\Repository\LoansRepository;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class BooksController extends AbstractController
@@ -43,10 +46,7 @@ class BooksController extends AbstractController
     {
         $user = $this->getUser();
         $loans = $this->loansRepository->findAll();
-         
-        if (!$user) {
-            throw $this->createAccessDeniedException('You must be logged in to leave a comment.');
-        }
+        // $loanUser = $this->loansRepository->findLastLoanByUser($user->id);
     
         $comment = new Comments();
         $form = $this->createForm(BookRating::class, $comment);  // first param: which form, second param: to be mapped to which table in database
@@ -67,7 +67,7 @@ class BooksController extends AbstractController
             'book'=> $book,
             'form'=> $form->createView(),
             'loans'=> $loans,
-            'user'=> $user,
+            // 'loanUser'=> $loanUser, 
         ]);
     }
 
@@ -93,4 +93,28 @@ public function reserveBook(int $id, Request $request, EntityManagerInterface $e
 
     return $this->redirectToRoute('index_books');
 }
+
+#[Route('/loans/{id}/extend', name: 'extend_loan')]
+public function extendLoan(int $id, EntityManagerInterface $entityManager, Security $security, Loans $loan): RedirectResponse
+{
+
+    if (!$loan || $loan->isReturned()) {
+        throw $this->createNotFoundException('Réservation introuvable ou déjà retournée.');
+    }
+
+    // Vérifie que l'utilisateur connecté est bien le propriétaire de la réservation
+    if ($loan->getUser() !== $security->getUser()) {
+        throw $this->createAccessDeniedException('Vous ne pouvez pas prolonger cette réservation.');
+    }
+    $dueDate = $loan->getDueDate();
+    $newDueDate = \DateTimeImmutable::createFromMutable($dueDate)->add(new \DateInterval('P7D'));
+    $loan->setDueDate(\DateTime::createFromImmutable($newDueDate));
+    // Prolonge la réservation (par exemple de 7 jours)
+    $entityManager->flush();
+
+    $this->addFlash('success', 'La durée de votre réservation a été prolongée de 7 jours.');
+
+    return $this->redirectToRoute('details_books', ['id' => $loan->getBook()->getId()]);
+}
+
 }
