@@ -113,9 +113,6 @@
     color: var(--accent-gold);
   }
   
- 
-
-
   
   @media (max-width: 768px) {
     .btn {

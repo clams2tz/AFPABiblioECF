@@ -6,18 +6,4 @@
     --accent-gold: #f1c40f;
     --text-dark: #34495e;
     --text-light: #95a5a6;
-
-    
   }
-
-  html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  *, *::before, *::after {
-    box-sizing: inherit;
-  }
-  
