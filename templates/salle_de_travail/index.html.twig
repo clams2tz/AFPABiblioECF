@@ -7,6 +7,10 @@
 {% endblock %}
 
 {% block body %}
+<div class="ms-3">
+    <a href="{{ path('change_locale', {'locale': 'en'}) }}" class="btn btn-outline-primary btn-sm">English</a>
+    <a href="{{ path('change_locale', {'locale': 'fr'}) }}" class="btn btn-outline-primary btn-sm">Français</a>
+</div>
 <h3 class='intro'>{{ 'salle_title'|trans }}</h3>
 <div class="container mt-5">
   <div class="row">

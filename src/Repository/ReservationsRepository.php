@@ -32,7 +32,7 @@ class ReservationsRepository extends ServiceEntityRepository
         }
     }
    /**
-    * @return Reservations[] Returns an array of Reservations objects
+    * @return Reservations[] 
     */
    public function findByDates(\DateTimeInterface $start, \DateTimeInterface $end)
    {
