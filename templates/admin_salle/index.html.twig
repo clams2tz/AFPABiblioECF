@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SalleDeTravail index{% endblock %}
+
+{% block body %}
+    <h1>SalleDeTravail index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>MaxCapacity</th>
+                <th>Wifi</th>
+                <th>Projector</th>
+                <th>Tableau</th>
+                <th>PrisesElectric</th>
+                <th>Television</th>
+                <th>Climatisation</th>
+                <th>Image</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for salle_de_travail in salle_de_travails %}
+            <tr>
+                <td>{{ salle_de_travail.id }}</td>
+                <td>{{ salle_de_travail.nom }}</td>
+                <td>{{ salle_de_travail.maxCapacity }}</td>
+                <td>{{ salle_de_travail.wifi ? 'Yes' : 'No' }}</td>
+                <td>{{ salle_de_travail.projector ? 'Yes' : 'No' }}</td>
+                <td>{{ salle_de_travail.tableau ? 'Yes' : 'No' }}</td>
+                <td>{{ salle_de_travail.prisesElectric }}</td>
+                <td>{{ salle_de_travail.television ? 'Yes' : 'No' }}</td>
+                <td>{{ salle_de_travail.climatisation ? 'Yes' : 'No' }}</td>
+                <td>{{ salle_de_travail.image }}</td>
+                <td>
+                    <a href="{{ path('app_admin_salle_show', {'id': salle_de_travail.id}) }}">show</a>
+                    <a href="{{ path('app_admin_salle_edit', {'id': salle_de_travail.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="11">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_admin_salle_new') }}">Create new</a>
+{% endblock %}

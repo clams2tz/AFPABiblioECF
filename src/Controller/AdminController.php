@@ -5,10 +5,8 @@ namespace App\Controller;
 use App\Entity\Users;
 use App\Form\UsersType;
 use App\Form\Users1Type;
-use App\Entity\Reservations;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\ReservationsRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,12 +14,12 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
-// ==================================================================================Arash========================================================================
+
 #[Route('/admin')]
 #[IsGranted('ROLE_ADMIN')]
 final class AdminController extends AbstractController
 {
-    #[Route('/', name: 'app_admin_index', methods: ['GET'])]
+    #[Route(name: 'app_admin_index', methods: ['GET'])]
     public function index(UsersRepository $usersRepository): Response
     {
         return $this->render('admin/index.html.twig', [
@@ -29,7 +27,6 @@ final class AdminController extends AbstractController
         ]);
     }
 
-    
     #[Route('/register', name: 'app_admin_register', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -86,17 +83,4 @@ final class AdminController extends AbstractController
 
         return $this->redirectToRoute('app_admin_index', [], Response::HTTP_SEE_OTHER);
     }
-    // ============================================================================Claudia===================================================================
-    
-
-    #[Route('/reservations', name: 'app_admin_reservations', methods:'GET')]
-        public function viewAllReservations(ReservationsRepository $reservationsRepository): Response
-        {
-            // Fetch all reservations from the repository
-            $reservations = $reservationsRepository->findAll();
-    
-            return $this->render('admin/adminres.html.twig', [
-                'reservations' => $reservations,
-            ]);
-        }
 }
