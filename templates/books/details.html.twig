@@ -24,6 +24,7 @@
         {% set isReserved = false %}
         {% set availabilityDate = null %}
         {% set reservedByYou = false %}
+        {% set extended = false %}
 
         {% for loan in loans %}
             {% if loan.book.id == book.id %}
@@ -32,6 +33,9 @@
                     {% set availabilityDate = loan.dueDate %}
                     {% if loan.user.id == user.id %}
                         {% set reservedByYou = true %}
+                    {% if loan.extension == true %}
+                        {% set extended = true %}
+                    {% endif %}
                     {% endif %}
                 {% endif %}
             {% endif %}
@@ -40,6 +44,11 @@
         {% if reservedByYou %}
             <p class="book-available">Vous avez déjà réservé ce livre</p>
             <p>A rendre le : {{ availabilityDate|date('d/m/Y') }}</p>
+        {% if extended == false %}
+<a href="{{ path('extend_loan', { 'id': loan.id }) }}" class="btn btn-secondary">Prolonger de 7 jours</a>
+        {% else %}
+            <p class="book-available">Vous avez déjà demandé une extension de réservation</p>
+        {% endif %}
         {% elseif isReserved %}
             <p class="book-available">Déjà réservé</p>
             <p>Disponible le : {{ availabilityDate|date('d/m/Y') }}</p>
