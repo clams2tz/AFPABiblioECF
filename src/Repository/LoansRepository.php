@@ -16,6 +16,15 @@ class LoansRepository extends ServiceEntityRepository
         parent::__construct($registry, Loans::class);
     }
 
+    public function findByUser($user)
+    {
+        return $this->createQueryBuilder('l')
+            ->where('l.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Loans[] Returns an array of Loans objects
     //     */

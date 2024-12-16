@@ -8,33 +8,35 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Id</th>
                 <th>FirstName</th>
                 <th>LastName</th>
                 <th>Address</th>
                 <th>PostalCode</th>
                 <th>Ville</th>
                 <th>Telephone</th>
+                <th>UserRole</th>
                 <th>Birthday</th>
                 <th>Email</th>
+                <th>Password</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for user in users %}
             <tr>
-                <td>{{ user.id }}</td>
                 <td>{{ user.firstName }}</td>
                 <td>{{ user.lastName }}</td>
                 <td>{{ user.address }}</td>
                 <td>{{ user.postalCode }}</td>
                 <td>{{ user.ville }}</td>
                 <td>{{ user.telephone }}</td>
-                <td>{{ user.birthday ? user.birthday|date('d-m-Y') : '' }}</td>
+                <td>{{ user.roles }}</td>
+                <td>{{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.password }}</td>
                 <td>
-                    <a href="{{ path('app_users_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_users_edit', {'id': user.id}) }}">edit</a>
+                    <a href="{{ path('app_admin_show', {'id': user.id}) }}">show</a>
+                    <a href="{{ path('app_admin_edit', {'id': user.id}) }}">edit</a>
                 </td>
             </tr>
         {% else %}
@@ -45,5 +47,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_users_register') }}">Create new</a>
+    <a href="{{ path('app_admin_new') }}">Create new</a>
 {% endblock %}

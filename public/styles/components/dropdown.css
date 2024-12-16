@@ -1,0 +1,21 @@
+.dropdown-hover:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+  }
+  
+  .dropdown-menu {
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+    min-width: 200px;
+  }
+  
+  .dropdown-item {
+    padding: 10px 15px;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f8f9fa;
+    color: #212529;
+  }
+  

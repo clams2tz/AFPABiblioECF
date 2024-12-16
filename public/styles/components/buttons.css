@@ -1,0 +1,123 @@
+.btn {
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    border: 2px solid;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .btn.edit {
+    border-color: var(--accent-green);
+    background-color: var(--accent-green);
+    color: var(--secondary-light);
+  }
+  
+  .btn.edit:hover {
+    background-color: transparent;
+    color: var(--accent-green);
+  }
+  
+  .btn.delete {
+    border-color: var(--accent-red);
+    background-color: var(--accent-red);
+    color: var(--secondary-light);
+  }
+  
+  .btn.delete:hover {
+    background-color: transparent;
+    color: var(--accent-red);
+  }
+  
+  .btn.back {
+    border-color: var(--primary-blue);
+    background-color: var(--primary-blue);
+    color: var(--secondary-light);
+  }
+  
+  .btn.back:hover {
+    background-color: transparent;
+    color: var(--primary-blue);
+  }
+  
+  .btn.logout {
+    border-color: var(--accent-gold);
+    background-color: var(--accent-gold);
+    color: var(--text-dark);
+  }
+  
+  .btn.logout:hover {
+    background-color: transparent;
+    color: var(--accent-gold);
+  }
+  
+  .btn.sign-in {
+    background-color: var(--accent-gold); 
+    color: var(--text-dark); 
+    border: 2px solid var(--accent-gold); 
+    border-radius: 5px;
+    padding: 8px 15px;
+    margin-right: 1rem;
+  }
+  
+  .btn.sign-in:hover {
+    background-color: transparent;
+    color: var(--accent-gold); 
+  }
+
+  .btn.register {
+    background-color: var(--accent-green); 
+    color: var(--text-dark); 
+    border: 2px solid var(--accent-green);
+    border-radius: 5px;
+    padding: 8px 15px;
+  }
+  
+  .btn.register:hover {
+    background-color: transparent;
+    color: var(--accent-green);
+  }
+
+  .btn.next{
+    border-color: var(--accent-green);
+    background-color: var(--accent-green);
+    color: var(--secondary-light);
+  }
+  
+  .btn.next:hover {
+    background-color: transparent;
+    color: var(--accent-green);
+  }
+
+  .btn.prev{
+    border-color: var(--accent-green);
+    background-color: var(--accent-green);
+    color: var(--secondary-light);
+  }
+  
+  .btn.prev:hover {
+    background-color: transparent;
+    color: var(--accent-green);
+  }
+
+  .btn.submit{
+    border-color: var(--accent-gold);
+    background-color: var(--accent-gold);
+    color: var(--secondary-light);
+  }
+  
+  .btn.submit:hover {
+    background-color: transparent;
+    color: var(--accent-gold);
+  }
+  
+  
+  @media (max-width: 768px) {
+    .btn {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
+  

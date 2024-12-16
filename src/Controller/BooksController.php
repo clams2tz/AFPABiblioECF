@@ -63,7 +63,6 @@ class BooksController extends AbstractController
             return $this->redirectToRoute('details_books', ['id' => $book->getId()]);
         }
 
-
         return $this->render('books/details.html.twig', [
             'book'=> $book,
             'form'=> $form->createView(),

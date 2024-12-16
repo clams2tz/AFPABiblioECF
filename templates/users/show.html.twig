@@ -1,66 +1,92 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block body %}
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <h1>Welcome, {{ user.firstName }}</h1>
+    <p>Here’s an overview of your account and activities.</p>
+  </header>
 
-{% block title %}Your Profile{% endblock %}
+  <section class="dashboard-summary">
+    <div class="card">
+      <h2>Borrowed Books</h2>
+      <p>{{ loans | length }}</p>
+    </div>
+    <div class="card">
+      <h2>Reserved Rooms</h2>
+      <p>{{ reservations | length }}</p>
+    </div>
+    <div class="card">
+      <h2>Total Fines</h2>
+      <p>€{{ fines|default(0) }}</p>
+    </div>
+  </section>
 
-{% block body %}
-    <h1>Users</h1>
-
-    <table class="table">
+  <section class="dashboard-details">
+    <div class="details-section">
+      <h2>Borrowed Books</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Borrow Date</th>
+            <th>Due Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
         <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ user.id }}</td>
-            </tr>
-            <tr>
-                <th>FirstName</th>
-                <td>{{ user.firstName }}</td>
-            </tr>
-            <tr>
-                <th>LastName</th>
-                <td>{{ user.lastName }}</td>
-            </tr>
-            <tr>
-                <th>Address</th>
-                <td>{{ user.address }}</td>
-            </tr>
-            <tr>
-                <th>PostalCode</th>
-                <td>{{ user.postalCode }}</td>
-            </tr>
-            <tr>
-                <th>Ville</th>
-                <td>{{ user.ville }}</td>
-            </tr>
-            <tr>
-                <th>Telephone</th>
-                <td>{{ user.telephone }}</td>
-            </tr>
-            <tr>
-                <th>Birthday</th>
-                <td>{{ user.birthday ? user.birthday|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ user.email }}</td>
-            </tr>
-            <tr>
-                <th>Password</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Books Borrowed</th>
-                <td>{{ user.password }}</td>
-            </tr>
-            <tr>
-                <th>Salle(s) Rented</th>
-                <td>{{ user.password }}</td>
-            </tr>
+          {% for loan in loans %}
+          <tr>
+            <td>{{ loan.book.title }}</td>
+            <td>{{ loan.book.author }}</td>
+            <td>{{ loan.borrowDate|date('Y-m-d') }}</td>
+            <td>{{ loan.dueDate|date('Y-m-d') }}</td>
+            <td>{{ loan.returned ? "Returned" : "Borrowed" }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="5">No books borrowed.</td>
+          </tr>
+          {% endfor %}
         </tbody>
-    </table>
+      </table>
+    </div>
 
-    <a href="{{ app.request.headers.get('referer') }}">Back to previous page</a>
+    <div class="details-section">
+      <h2>Reserved Rooms</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Room Name</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for reservation in reservations %}
+          <tr>
+            <td>{{ reservation.salle.nom }}</td>
+            <td>{{ reservation.startDate|date('Y-m-d') }}</td>
+            <td>{{ reservation.endDate|date('Y-m-d') }}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="3">No reserved rooms.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
 
-    <a href="{{ path('app_users_edit', {'id': user.id}) }}">edit</a>
+  <div class="action-buttons">
+    <div class="btn-left">
+      <a href="{{ app.request.headers.get('referer') }}" class="btn back">Back</a>
+    </div>
+    <div class="btn-right">
+      <a href="{{ path('app_users_edit', { id: user.id }) }}" class="btn edit">Edit</a>
+      {{ include("users/_delete_form.html.twig") }}
+      <a href="{{ path('app_logout') }}" class="btn logout">Logout</a>
+    </div>
+  </div>
 
-    {{ include('users/_delete_form.html.twig') }}
-{% endblock %}
+  {% endblock %}
