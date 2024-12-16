@@ -21,7 +21,7 @@ class Abonnement
     private ?\DateTimeInterface $renewal = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $subscription_type = null;
+    private ?string $subscriptionType = null;
 
     #[ORM\Column]
     private ?float $price = null;
@@ -57,12 +57,12 @@ class Abonnement
     
     public function getSubscriptionType(): ?string
     {
-        return $this->subscription_type;
+        return $this->subscriptionType;
     }
 
-    public function setSubscriptionType(string $subscription_type): static
+    public function setSubscriptionType(string $subscriptionType): static
     {
-        $this->subscription_type = $subscription_type;
+        $this->subscriptionType = $subscriptionType;
         return $this;
     }
 

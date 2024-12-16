@@ -1,0 +1,28 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1; 
+}
+
+footer {
+  position: sticky;
+  bottom: 0;
+}
+.custom-footer i {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.custom-footer i:hover {
+  color: var(--accent-gold); 
+  transform: scale(1.2); 
+}
