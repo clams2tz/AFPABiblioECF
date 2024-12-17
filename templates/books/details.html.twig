@@ -4,11 +4,6 @@
     {{ book.title }}
 {% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('src/styles/starability.css') }}"/>
-{% endblock %}
-
 {% block body %}
     <div class="container">
         <img src="" alt="" class="image"/>
@@ -56,6 +51,9 @@
             <a href="{{ path('reserve_book', { 'id': book.id }) }}" class="btn btn-primary">Réserver</a>
         {% endif %}
 
-        
+        {{ include('users/_comment_user.html.twig')}}
+        {{ include('users/_comment_list.html.twig')}}
+
     </div>
+
 {% endblock %}

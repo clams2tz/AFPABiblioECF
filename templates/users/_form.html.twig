@@ -1,7 +1,7 @@
 <div class="container register-container">
   <div class="custom-progress-bar">
     <div class="step active">
-      <p>Name</p>
+      <p>Personal Info</p>
       <div class="bullet"><span>1</span></div>
       <div class="check fa-solid fa-check"></div>
     </div>
@@ -16,14 +16,18 @@
       <div class="check fa-solid fa-check"></div>
     </div>
     <div class="step">
-      <p>Submit</p>
+      <p>Address</p>
       <div class="bullet"><span>4</span></div>
+      <div class="check fa-solid fa-check"></div>
+    </div>
+    <div class="step">
+      <p>Submit</p>
+      <div class="bullet"><span>5</span></div>
       <div class="check fa-solid fa-check"></div>
     </div>
   </div>
 
   <div class="form-outer">
-    <form method="post">
       <div class="page slide-page active">
         <div class="title">Basic Info:</div>
         <div class="form-group">
@@ -33,6 +37,17 @@
         <div class="form-group">
           {{ form_label(form.lastName) }}
           {{ form_widget(form.lastName, { attr: { class: "form-control" } }) }}
+        </div>
+        <div class="title">Date of Birth:</div>
+        <div class="form-group">
+          {{ form_label(form.birthday) }}
+          <div class="form-inline">
+            {{
+              form_widget(form.birthday, {
+                attr: { class: "datepicker" }
+              })
+            }}
+          </div>
         </div>
         <div class="field">
           <button class="firstNext next btn">Next</button>
@@ -54,20 +69,17 @@
         </div>
       </div>
       <div class="page">
-        <div class="title">Date of Birth:</div>
-        <div class="form-group">
-          {{ form_label(form.birthday) }}
-          <div class="form-inline">
-            {{
-              form_widget(form.birthday, {
-                attr: { class: "datepicker" }
-              })
-            }}
-          </div>
-        </div>
         <div class="form-group">
           {{ form_label(form.address) }}
           {{ form_widget(form.address, { attr: { class: "form-control" } }) }}
+        </div>
+        <div class="form-group">
+          {{ form_label(form.ville) }}
+          {{ form_widget(form.ville, { attr: { class: "form-control" } }) }}
+        </div>
+        <div class="form-group">
+          {{ form_label(form.postalCode) }}
+          {{ form_widget(form.postalCode, { attr: { class: "form-control" } }) }}
         </div>
         <div class="field btns">
           <button class="prev-2 prev btn">Previous</button>
@@ -99,7 +111,6 @@
           <button type="submit" class="submit btn">Submit</button>
         </div>
       </div>
-    </form>
   </div>
 </div>
 

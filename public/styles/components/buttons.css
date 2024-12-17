@@ -6,7 +6,6 @@
     border-radius: 5px;
     transition: all 0.3s ease;
     cursor: pointer;
-    display: inline-block;
   }
   
   .btn.edit {
@@ -69,7 +68,7 @@
 
   .btn.register {
     background-color: var(--accent-green); 
-    color: var(--text-dark); 
+    color: var(--secondary-light); 
     border: 2px solid var(--accent-green);
     border-radius: 5px;
     padding: 8px 15px;

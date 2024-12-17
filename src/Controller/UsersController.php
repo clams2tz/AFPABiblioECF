@@ -8,12 +8,10 @@ use App\Form\UsersType;
 use App\Entity\Abonnement;
 use App\Repository\LoansRepository;
 use App\Repository\ReservationsRepository;
-use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
@@ -22,15 +20,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('/users')]
 final class UsersController extends AbstractController
 {
-    #[Route(name: 'app_users_index', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function index(UsersRepository $usersRepository): Response
-    {
-        return $this->render('users/index.html.twig', [
-            'users' => $usersRepository->findAll(),
-        ]);
-    }
-
     /////////// ADD user (register)
     #[Route('/register', name: 'app_users_register', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher): Response
@@ -41,7 +30,9 @@ final class UsersController extends AbstractController
 
         $user = new Users();
         $abonnement = new Abonnement();
-        $form = $this->createForm(UsersType::class, $user);
+        $form = $this->createForm(UsersType::class, $user, [
+            'is_authenticated' => $this->getUser() !== null,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -57,18 +48,22 @@ final class UsersController extends AbstractController
             $monthlyCost = 23.99;
             if ($chosenAbonnement === 'annual') {
                 $abonnement->setPrice($monthlyCost * 12);
+                $renewalDate = new \DateTime();
+                $renewalDate->modify('+12 months');
+                $abonnement->setRenewal($renewalDate);
             } else {
                 $abonnement->setPrice($monthlyCost);
+                $renewalDate = new \DateTime();
+                $renewalDate->modify('+1 months');
+                $abonnement->setRenewal($renewalDate);            
             }
-            $abonnement->setRenewal(new \DateTime());
-
-
+            
             $entityManager->persist($abonnement);
             $user->setAbonnement($abonnement);  // to inject data to abonnement table through user table \\
             $entityManager->persist($user);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_users_index');
+            return $this->redirectToRoute('index_books');
             // return $this->redirectToRoute('app_users_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -107,6 +102,7 @@ final class UsersController extends AbstractController
 
             $userRoleEnum = UserRole::from($form->get('roles')->getData());
             $user->setRoles($userRoleEnum);
+            $entityManager->persist($user);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_users_show');

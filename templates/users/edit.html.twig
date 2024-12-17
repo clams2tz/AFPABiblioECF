@@ -5,9 +5,72 @@
 {% block body %}
     <h1>Edit Users</h1>
 
-    {{ include('users/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('app_users_index') }}">back to list</a>
-    
-    {{ include('users/_delete_form.html.twig') }}
+    <div class="form-container">
+    {{ form_start(form) }}
+        <div class="row g-3">
+            <div class="col-md-6">
+                {{ form_label(form.firstName, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.firstName) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.lastName, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.lastName) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.birthday, 'Birthday', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.birthday, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.birthday) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.telephone, 'Phone', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.telephone, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.telephone) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.address, 'Address', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.address, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.address) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.ville, 'City', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.ville, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.ville) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.postalCode, 'Postal Code', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.postalCode, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.postalCode) }}
+            </div>
+            <div class="col-md-6">
+                {{ form_label(form.email, 'Email', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.email) }}
+            </div>
+            {% if is_granted('ROLE_USER') %}
+            <div class="col-md-6">
+                {{ form_label(form.plainPassword, 'Password', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.plainPassword) }}
+            </div>
+            {% endif %}
+            <div class="col-md-6">
+                {{ form_label(form.subscriptionType, 'Subscription Type', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.subscriptionType, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.subscriptionType) }}
+            </div>
+            {% if is_granted('ROLE_ADMIN') %}
+            <div class="col-md-6">
+                {{ form_label(form.roles, 'Role', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.roles, {'attr': {'class': 'form-control'}}) }}
+                {{ form_errors(form.roles) }}
+            {% endif %}
+            <span>
+                <a class="back btn" href="{{ app.request.headers.get('referer') ?? '#' }}">Back</a>
+                <button type="submit" class="edit btn">{{ button_label|default('Update') }}</button>
+                {{ include('users/_delete_form.html.twig') }}
+            </span>
+            {{ form_end(form) }}
+        </div>
 {% endblock %}

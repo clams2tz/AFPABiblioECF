@@ -8,39 +8,44 @@
 	<a href="{{ path('app_admin_books_index') }}" class="btn btn-primary">Tout les livres</a>
 	<a href="{{ path('app_admin_books_index_retard') }}" class="btn btn-primary">Livres en retard</a>
 
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Title</th>
-				<th>Author</th>
-				<th>ISBN</th>
-				<th>BookCondition</th>
-				<th>Summary</th>
-				<th>Reserved</th>
-				<th>ReleaseDate</th>
-				<th>actions</th>
-				<th>Restitution</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for book in books %}
-				<tr>
-					<td>{{ book.id }}</td>
-					<td>{{ book.title }}</td>
-					<td>{{ book.Author }}</td>
-					<td>{{ book.ISBN }}</td>
-					<td>{{ book.bookCondition }}</td>
-					<td>{{ book.summary }}</td>
-					<td>{{ book.reserved ? 'Yes' : 'No' }}</td>
-					<td>{{ book.releaseDate }}</td>
-					<td>
-						<a href="{{ path('app_admin_books_show', {'id': book.id}) }}">show</a>
-						<a href="{{ path('app_admin_books_edit', {'id': book.id}) }}">edit</a>
-					</td>
-<td>
-    <a href="{{ path('app_admin_books_index_restitution', { 'id': book.id }) }}" class="btn btn-primary">Restituer</a>
-</td>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>ISBN</th>
+                <th>BookCondition</th>
+                <th>Summary</th>
+                <th>Reserved</th>
+                <th>ReleaseDate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.Author }}</td>
+                <td>{{ book.ISBN }}</td>
+                <td>{{ book.bookCondition }}</td>
+                <td>{{ book.summary }}</td>
+                <td>{{ book.reserved ? 'Yes' : 'No' }}</td>
+                <td>{{ book.releaseDate }}</td>
+                <td>
+                    <a href="{{ path('app_admin_books_show', {'id': book.id}) }}">Show</a>
+                    <a href="{{ path('app_admin_books_edit', {'id': book.id}) }}">Edit</a>
+                    <a href="#">Comments</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 
 
 					{# {% set isReserved = false %}
