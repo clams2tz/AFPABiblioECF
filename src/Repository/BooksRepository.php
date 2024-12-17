@@ -31,6 +31,13 @@ class BooksRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
     }
+    public function getReservedBooks(){
+        
+        return $this->createQueryBuilder('b')
+        ->andWhere('b.reserved = true')
+        ->getQuery()
+        ->getResult();
+    }
     
     public function getReservedBooks(){
 
