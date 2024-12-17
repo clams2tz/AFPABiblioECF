@@ -9,4 +9,3 @@ equip_clim: 'Air Conditioning'
 salle_avail: 'Available for your meetings between 1 and 4 hours long, reserve today!' 
 
 
-reserve_me: 'Create a reservation for {{ salle.nom }}'
