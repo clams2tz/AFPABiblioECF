@@ -3,22 +3,26 @@
 namespace App\Controller;
 
 use App\Entity\Books;
+use App\Entity\Loans;
 use App\Form\BooksType;
 use App\Repository\BooksRepository;
+use App\Repository\LoansRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/books')]
 final class AdminBooksController extends AbstractController
 {
     #[Route(name: 'app_admin_books_index', methods: ['GET'])]
-    public function index(BooksRepository $booksRepository): Response
+    public function index(BooksRepository $booksRepository, LoansRepository $loansRepository): Response
     {
         return $this->render('admin_books/index.html.twig', [
             'books' => $booksRepository->findAll(),
+            'loans' => $loansRepository->findAll(),
         ]);
     }
 
@@ -78,4 +82,44 @@ final class AdminBooksController extends AbstractController
 
         return $this->redirectToRoute('app_admin_books_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/admin/books', name: 'app_admin_books_index_retard', methods: ['GET'])]
+    public function retardLoans(BooksRepository $booksRepository): Response
+    {
+        return $this->render('admin_books/index.html.twig', [
+            'books' => $booksRepository->getNonRestituatedBooks(),
+        ]);
+    }
+
+    #[Route('/admin/books/{id}', name: 'app_admin_books_index_restitution', methods: ['GET'])]
+    public function restitutionLoans(BooksRepository $booksRepository, LoansRepository $loansRepository, EntityManagerInterface $entityManager, Books $book): Response
+    {
+        
+        $latestLoan = $loansRepository->findLatestLoanByBook($book);
+    
+        if ($latestLoan) {
+            $latestLoan->setReturned(true);
+            $latestLoan->setDateFinalRestitution(new \DateTime());
+    
+            $entityManager->persist($latestLoan);
+            $entityManager->flush();
+        }
+    
+        return $this->redirectToRoute('app_admin_books_index'); // Redirection vers la liste des livres
+    }
+
+//     #[Route('/{idBook}/{idLoan}/restitution', name: 'book_restitution')]
+//     public function restituateBook(Books $book,Loans $loan, EntityManagerInterface $entityManager): RedirectResponse
+// {
+//     $entityManager->persist($book);
+//     $actualDate = new \DateTime();
+
+//     $loan->setReturned(true);
+//     $loan->setDateFinalRestitution($actualDate);
+
+//     $entityManager->persist($loan);
+//     $entityManager->flush();
+
+//     return $this->redirectToRoute('app_admin_books_index');
+// }
 }

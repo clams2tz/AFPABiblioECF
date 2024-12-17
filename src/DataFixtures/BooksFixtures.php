@@ -28,7 +28,9 @@ class BooksFixtures extends Fixture
 
             $manager->persist($book);
         }
+        
 
+        
         $manager->flush();
     }
 }
