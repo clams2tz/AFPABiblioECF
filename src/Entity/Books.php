@@ -2,13 +2,14 @@
 
 namespace App\Entity;
 
+use App\Entity\Loans;
 use App\Enum\BookCondition;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\BooksRepository;
+use phpDocumentor\Reflection\Types\Self_;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use phpDocumentor\Reflection\Types\Self_;
 
 #[ORM\Entity(repositoryClass: BooksRepository::class)]
 class Books
@@ -36,15 +37,18 @@ class Books
     #[ORM\Column(nullable: true)]
     private ?bool $reserved = null;
 
-
-
-
-    
     /**
      * @var Collection<int, Comments>
      */
     #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'book')]
     private Collection $comment;
+    
+    /**
+     * @var Collection<int, Loans>
+     */
+    #[ORM\OneToMany(targetEntity: Loans::class, mappedBy: 'book')]
+    private Collection $loans;
+
 
     #[ORM\Column(length: 4)]
     private ?string $releaseDate = null;
@@ -53,8 +57,8 @@ class Books
     private ?string $image = null;
     
     public function __construct()
-    {
-        // $this->comment_id = new ArrayCollection();
+    {   
+        $this->loans = new ArrayCollection();
         $this->comment = new ArrayCollection();
     }
 
@@ -159,6 +163,36 @@ class Books
             // set the owning side to null (unless already changed)
             if ($comment->getBook() === $this) {
                 $comment->setBook(null);
+            }
+        }
+
+        return $this;
+    }
+    
+    /**
+     * @return Collection<int, Loans>
+     */
+    public function getLoan(): Collection
+    {
+        return $this->loan;
+    }
+
+    public function addLoan(Loans $loan): static
+    {
+        if (!$this->loan->contains($loan)) {
+            $this->loan->add($loan);
+            $loan->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLoan(Loans $loan): static
+    {
+        if ($this->loan->removeElement($loan)) {
+
+            if ($loan->getBook() === $this) {
+                $loan->setBook(null);
             }
         }
 

@@ -34,6 +34,9 @@ class Loans
     #[ORM\Column]
     private ?bool $returned = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $dateFinalRestitution = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class Loans
     public function setReturned(bool $returned): static
     {
         $this->returned = $returned;
+
+        return $this;
+    }
+
+    public function getDateFinalRestitution(): ?\DateTimeInterface
+    {
+        return $this->dateFinalRestitution;
+    }
+
+    public function setDateFinalRestitution(?\DateTimeInterface $dateFinalRestitution): static
+    {
+        $this->dateFinalRestitution = $dateFinalRestitution;
 
         return $this;
     }

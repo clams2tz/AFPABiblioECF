@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Books;
 use App\Entity\Loans;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Loans>
@@ -28,6 +29,26 @@ class LoansRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+    public function findRetardLoans()
+    {
+            return $this->createQueryBuilder('l')
+                ->andWhere('l.dueDate < :today')
+                ->setParameter('today', new \DateTime())
+                ->getQuery()
+                ->getResult();
+    }
+
+    public function findLatestLoanByBook(Books $book): ?Loans
+{
+    return $this->createQueryBuilder('l')
+        ->andWhere('l.book = :book')
+        ->andWhere('l.returned = false')
+        ->orderBy('l.dueDate', 'DESC')
+        ->setParameter('book', $book)
+        ->setMaxResults(1) 
+        ->getQuery()
+        ->getOneOrNullResult();
+}
 
     //    /**
     //     * @return Loans[] Returns an array of Loans objects
