@@ -48,6 +48,9 @@ class Books
 
     #[ORM\Column(length: 4)]
     private ?string $releaseDate = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
     
     public function __construct()
     {
@@ -170,6 +173,18 @@ class Books
     public function setReleaseDate(string $releaseDate): static
     {
         $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }
