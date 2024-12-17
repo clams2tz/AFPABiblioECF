@@ -45,7 +45,8 @@ class BooksController extends AbstractController
     public function show(Request $request, EntityManagerInterface $entityManager, Books $book): Response
     {
         $bookId = $book->getId();
-        $user = $this->getUser()->getId();
+        $user = $this->getUser();
+        $userId = $this->getUser()->getId();
         $loans = $this->loansRepository->findAll();
         // $loanUser = $this->loansRepository->findLastLoanByUser($user, $bookId);
     
@@ -68,7 +69,7 @@ class BooksController extends AbstractController
             'book'=> $book,
             'form'=> $form->createView(),
             'loans'=> $loans,
-            // 'loanUser'=> $loanUser, 
+            'userId'=> $userId, 
         ]);
     }
 
@@ -98,22 +99,11 @@ public function reserveBook(int $id, Request $request, EntityManagerInterface $e
 #[Route('/loans/{id}/extend', name: 'extend_loan')]
 public function extendLoan(int $id, EntityManagerInterface $entityManager, Security $security, Loans $loan): RedirectResponse
 {
-
-    if (!$loan || $loan->isReturned()) {
-        throw $this->createNotFoundException('Réservation introuvable ou déjà retournée.');
-    }
-
-    // Vérifie que l'utilisateur connecté est bien le propriétaire de la réservation
-    if ($loan->getUser() !== $security->getUser()) {
-        throw $this->createAccessDeniedException('Vous ne pouvez pas prolonger cette réservation.');
-    }
     $dueDate = $loan->getDueDate();
     $newDueDate = \DateTimeImmutable::createFromMutable($dueDate)->add(new \DateInterval('P7D'));
     $loan->setDueDate(\DateTime::createFromImmutable($newDueDate));
-    // Prolonge la réservation (par exemple de 7 jours)
+    $loan->setExtension(true);
     $entityManager->flush();
-
-    $this->addFlash('success', 'La durée de votre réservation a été prolongée de 7 jours.');
 
     return $this->redirectToRoute('details_books', ['id' => $loan->getBook()->getId()]);
 }

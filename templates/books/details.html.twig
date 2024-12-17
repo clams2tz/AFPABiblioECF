@@ -22,33 +22,33 @@
         </p>
 
         {% set isReserved = false %}
+        {% set loanId = null %}
         {% set availabilityDate = null %}
         {% set reservedByYou = false %}
         {% set extended = false %}
 
+        {# Boucle pour vérifier les prêts liés au livre #}
         {% for loan in loans %}
-            {% if loan.book.id == book.id %}
-                {% if loan.returned == false and loan.dueDate > 'now'|date('Y-m-d H:i:s') %}
-                    {% set isReserved = true %}
-                    {% set availabilityDate = loan.dueDate %}
-                    {# {% if loan.user.id == user.id %} #}
-                        {# {% set reservedByYou = true %} #}
-                    {% if loan.extension == true %}
-                        {% set extended = true %}
-                    {% endif %}
-                    {% endif %}
+            {% if loan.book.id == book.id and loan.returned == false and loan.dueDate > 'now'|date('Y-m-d H:i:s') %}
+                {% set isReserved = true %}
+                {% set loanId = loan.id %}
+                {% set availabilityDate = loan.dueDate %}
+                {% if loan.user.id == userId %}
+                    {% set reservedByYou = true %}
+                    {% set extended = loan.extension %}
                 {% endif %}
-            {# {% endif %} #}
+            {% endif %}
         {% endfor %}
 
         {% if reservedByYou %}
             <p class="book-available">Vous avez déjà réservé ce livre</p>
             <p>A rendre le : {{ availabilityDate|date('d/m/Y') }}</p>
-        {% if extended == false %}
-<a href="{{ path('extend_loan', { 'id': loan.id }) }}" class="btn btn-secondary">Prolonger de 7 jours</a>
-        {% else %}
-            <p class="book-available">Vous avez déjà demandé une extension de réservation</p>
-        {% endif %}
+
+            {% if not extended %}
+                <a href="{{ path('extend_loan', { 'id': loanId }) }}" class="btn btn-secondary">Prolonger de 7 jours</a>
+            {% else %}
+                <p class="book-available">Vous avez déjà demandé une extension de réservation</p>
+            {% endif %}
         {% elseif isReserved %}
             <p class="book-available">Déjà réservé</p>
             <p>Disponible le : {{ availabilityDate|date('d/m/Y') }}</p>
