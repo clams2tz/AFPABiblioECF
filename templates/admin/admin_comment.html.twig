@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %} 
+
+{% block title %}Comments{% endblock %} 
+
+{% block body %}
+<h1>All Comments</h1>
+
+<section class="dashboard-details">
+  <div class="details-section">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Rating</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for comment in comments %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td>
+            {{ comment.user.firstName ~ ' ' ~ comment.user.lastName }}
+          </td>
+          <td>
+            <div
+              class="starability-result"
+              data-rating="{{ comment.rating }}"
+            ></div>
+          </td>
+          <td>{{ comment.comment }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+<a href="{{ path('app_admin_index') }}" class="back btn">Back to Admin Panel</a>
+
+{% endblock %}

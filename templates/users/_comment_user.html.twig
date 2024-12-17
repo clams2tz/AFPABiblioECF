@@ -1,16 +1,18 @@
 
-{{ form_start(form, { 'attr': {'class': 'form-comment-container'} }) }}
-    <fieldset class="starability-fade">
-      <legend>Rate This Book</legend>
+
+{# , { 'attr': {'class': 'form-comment-container'} } #}
+
+<div class="form-comment-container">
+  {{ form_start(form) }}
+  <legend>Rate This Book</legend>
+      {{ form_label(form.rating, 'Rate This Book') }}
       {{ form_widget(form.rating) }}
-    </fieldset>
 
-    <div class="comments">
-      <label>Leave Your Comment</label>
-      {{ form_widget(form.comment) }}
-    </div>
-
-    <button type="submit" class="submit btn">Submit</button>
-{{ form_end(form) }}
-
-
+      <div class="comments">
+        <label>Leave Your Comment</label>
+        {{ form_widget(form.comment) }}
+      </div>
+      <button type="submit" class="submit btn">Submit</button>
+  
+  {{ form_end(form) }}
+</div>

@@ -69,8 +69,9 @@ class UsersType extends AbstractType
                         'message' => 'email cannot be empty'
                     ]),
                 ],
-            ])
-            ->add('plainPassword', PasswordType::class, [
+            ]);
+            if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $builder->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -86,8 +87,9 @@ class UsersType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-            ])
-            ->add('subscriptionType', ChoiceType::class, [
+            ]);
+            }
+            $builder->add('subscriptionType', ChoiceType::class, [
                 'choices'  => [
                     'Annually (10% Discount 287.88€)' => 'annual',
                     'Monthly (23.99€)' => 'monthly',

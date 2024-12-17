@@ -9,6 +9,7 @@ use App\Form\BookRating;
 use App\Repository\BooksRepository;
 use App\Repository\LoansRepository;
 use App\Repository\UsersRepository;
+use App\Repository\CommentsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,8 @@ class BooksController extends AbstractController
 {
     private $booksRepository;
     private $loansRepository;
-    public function __construct(BooksRepository $booksRepository, LoansRepository $loansRepository, UsersRepository $usersRepository){
+    public function __construct(BooksRepository $booksRepository, LoansRepository $loansRepository, UsersRepository $usersRepository)
+    {
         $this->booksRepository = $booksRepository;
         $this->loansRepository = $loansRepository;
         $this->usersRepository = $usersRepository;
@@ -33,65 +35,67 @@ class BooksController extends AbstractController
         $loans = $this->loansRepository->findAll();
 
         return $this->render('books/index.html.twig', [
-            'books'=> $books,
-            'loans'=> $loans,
+            'books' => $books,
+            'loans' => $loans,
         ]);
     }
 
-    #[Route('/books/{id}', name:'details_books')]
-    public function show(Request $request, EntityManagerInterface $entityManager, Books $book): Response
+    #[Route('/books/{id}', name: 'details_books')]
+    public function show(Request $request, EntityManagerInterface $entityManager, Books $book, CommentsRepository $commentsRepository): Response
     {
         $user = $this->getUser();
         $loans = $this->loansRepository->findAll();
-         
+
         if (!$user) {
             throw $this->createAccessDeniedException('You must be logged in to leave a comment.');
         }
-    
+
         $comment = new Comments();
+        $showComments = $commentsRepository->findAll();  // to show comments
         $form = $this->createForm(BookRating::class, $comment);  // first param: which form, second param: to be mapped to which table in database
         $form->handleRequest($request);
-    
+        $form->get('rating')->getData();
+        
         if ($form->isSubmitted() && $form->isValid()) {
             $comment->setDate(new \DateTime());
             $comment->setBook($book);
             $comment->setUser($user);
-    
+
             $entityManager->persist($comment);
             $entityManager->flush();
-    
+
             return $this->redirectToRoute('details_books', ['id' => $book->getId()]);
         }
 
         return $this->render('books/details.html.twig', [
-            'book'=> $book,
-            'form'=> $form->createView(),
-            'loans'=> $loans,
-            'user'=> $user,
-            'comment' => $comment,
+            'book' => $book,
+            'form' => $form->createView(),
+            'loans' => $loans,
+            'user' => $user,
+            'showComments' => $showComments,
         ]);
     }
 
 
     #[Route('/books/{id}/reserve', name: 'reserve_book')]
-public function reserveBook(int $id, Request $request, EntityManagerInterface $entityManager): RedirectResponse
-{
-    $book = $entityManager->getRepository(Books::class)->find($id);
+    public function reserveBook(int $id, Request $request, EntityManagerInterface $entityManager): RedirectResponse
+    {
+        $book = $entityManager->getRepository(Books::class)->find($id);
 
-    $user = $this->getUser();
-    $borrowDate = new \DateTime();
+        $user = $this->getUser();
+        $borrowDate = new \DateTime();
 
-    $loan = new Loans();
-    $loan->setBook($book);
-    $loan->setDueDate((new \DateTime())->modify('+7 days'));
-    $loan->setReturned(false);
-    $loan->setExtension(false);
-    $loan->setUser($user);
-    $loan->setBorrowDate($borrowDate);
+        $loan = new Loans();
+        $loan->setBook($book);
+        $loan->setDueDate((new \DateTime())->modify('+7 days'));
+        $loan->setReturned(false);
+        $loan->setExtension(false);
+        $loan->setUser($user);
+        $loan->setBorrowDate($borrowDate);
 
-    $entityManager->persist($loan);
-    $entityManager->flush();
+        $entityManager->persist($loan);
+        $entityManager->flush();
 
-    return $this->redirectToRoute('index_books');
-}
+        return $this->redirectToRoute('index_books');
+    }
 }

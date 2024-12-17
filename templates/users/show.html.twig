@@ -80,7 +80,7 @@
 
   <div class="action-buttons">
     <div class="btn-left">
-      <a href="{{ app.request.headers.get('referer') }}" class="btn back">Back</a>
+      <a class="back btn" href="{{ app.request.headers.get('referer') ?? '#' }}">Back</a>
     </div>
     <div class="btn-right">
       <a href="{{ path('app_users_edit', { id: user.id }) }}" class="btn edit">Edit</a>

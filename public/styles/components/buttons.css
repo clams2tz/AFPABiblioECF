@@ -68,7 +68,7 @@
 
   .btn.register {
     background-color: var(--accent-green); 
-    color: var(--text-dark); 
+    color: var(--secondary-light); 
     border: 2px solid var(--accent-green);
     border-radius: 5px;
     padding: 8px 15px;

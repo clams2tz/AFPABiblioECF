@@ -55,7 +55,8 @@ final class UsersController extends AbstractController
                 $abonnement->setPrice($monthlyCost);
                 $renewalDate = new \DateTime();
                 $renewalDate->modify('+1 months');
-                $abonnement->setRenewal($renewalDate);            }
+                $abonnement->setRenewal($renewalDate);            
+            }
             
             $entityManager->persist($abonnement);
             $user->setAbonnement($abonnement);  // to inject data to abonnement table through user table \\
