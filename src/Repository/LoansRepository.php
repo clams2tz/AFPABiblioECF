@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\Books;
 use App\Entity\Loans;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Loans>
@@ -16,14 +17,38 @@ class LoansRepository extends ServiceEntityRepository
         parent::__construct($registry, Loans::class);
     }
 
-    public function findByUser($user)
+    public function findLastLoanByUser(int $userId, int $bookId): ?Loans
     {
         return $this->createQueryBuilder('l')
-            ->where('l.user = :user')
-            ->setParameter('user', $user)
+            ->andWhere('l.user_id = :userId')
+            ->andWhere('l.book_id = :bookId')
+            ->setParameter(':userId', $userId)
+            ->setParameter(':bookId', $bookId)
+            ->orderBy('l.dueDate', 'DESC')
+            ->setMaxResults(1)
             ->getQuery()
-            ->getResult();
+            ->getOneOrNullResult();
     }
+    public function findRetardLoans()
+    {
+            return $this->createQueryBuilder('l')
+                ->andWhere('l.dueDate < :today')
+                ->setParameter('today', new \DateTime())
+                ->getQuery()
+                ->getResult();
+    }
+
+    public function findLatestLoanByBook(Books $book): ?Loans
+{
+    return $this->createQueryBuilder('l')
+        ->andWhere('l.book = :book')
+        ->andWhere('l.returned = false')
+        ->orderBy('l.dueDate', 'DESC')
+        ->setParameter('book', $book)
+        ->setMaxResults(1) 
+        ->getQuery()
+        ->getOneOrNullResult();
+}
 
     //    /**
     //     * @return Loans[] Returns an array of Loans objects

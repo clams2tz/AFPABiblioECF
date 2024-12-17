@@ -24,13 +24,13 @@ class BooksFixtures extends Fixture
             $book->setBookCondition($faker->randomElement(['Excellent', 'Good', 'Fair', 'Poor']));
             $book->setSummary($faker->realText(500));
             $book->setReserved($faker->boolean());
+            $book->setImage($faker->imageUrl(640, 480, 'Books', true));
 
             $manager->persist($book);
-
-            // Ajoutez une référence
-            $this->addReference(self::BOOK_REFERENCE . $i, $book);
         }
+        
 
+        
         $manager->flush();
     }
 }

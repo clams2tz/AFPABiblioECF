@@ -1,5 +1,9 @@
 <?php
 
+//Fichier à enlever du dossier avant de générer les fixtures.
+//Ensuite, remettre ce fichier dans src/DataFixtures
+//Dans la console, run : symfony console doctrine:fixtures:load --append --group=loans
+
 namespace App\DataFixtures;
 
 use Faker\Factory;
@@ -24,9 +28,9 @@ class LoansFixtures extends Fixture implements FixtureGroupInterface
         $faker = Factory::create('fr_FR');
 
         $users = $this->entityManager->getRepository('App\Entity\Users')->findAll();
-        $books = $this->entityManager->getRepository('App\Entity\Books')->findAll();
+        $books = $this->entityManager->getRepository('App\Entity\Books')->getReservedBooks();
 
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < count($books); $i++) {
             $loan = new Loans();
 
             $user = $faker->randomElement($users);
