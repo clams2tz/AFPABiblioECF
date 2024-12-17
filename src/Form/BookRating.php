@@ -23,10 +23,7 @@ class BookRating extends AbstractType
             ],
             'expanded' => true,
             'multiple' => false,
-            'data' => 1, // default selected value
-            'attr' => [
-                'class' => 'starability-fade'
-            ],
+            'required' => true,
         ])
         ->add('comment', TextareaType::class, [
             'label' => 'Comment',

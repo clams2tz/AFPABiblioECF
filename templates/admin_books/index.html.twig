@@ -31,8 +31,9 @@
                 <td>{{ book.reserved ? 'Yes' : 'No' }}</td>
                 <td>{{ book.releaseDate }}</td>
                 <td>
-                    <a href="{{ path('app_admin_books_show', {'id': book.id}) }}">show</a>
-                    <a href="{{ path('app_admin_books_edit', {'id': book.id}) }}">edit</a>
+                    <a href="{{ path('app_admin_books_show', {'id': book.id}) }}">Show</a>
+                    <a href="{{ path('app_admin_books_edit', {'id': book.id}) }}">Edit</a>
+                    <a href="#">Comments</a>
                 </td>
             </tr>
         {% else %}

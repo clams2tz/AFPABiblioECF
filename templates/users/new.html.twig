@@ -5,9 +5,9 @@
 
 {% block body %}
     <h1>Register</h1>
-
+    {{ form_start(form) }}
    {{ include('users/_form.html.twig') }} 
+   {{ form_end(form) }}
    <script src="{{ asset('app.js') }}"></script>
-
     <a href="{{ path('index_books') }}">back to list</a>
 {% endblock %}

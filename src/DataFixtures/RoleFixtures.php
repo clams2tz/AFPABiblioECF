@@ -48,7 +48,6 @@ class RoleFixtures extends Fixture
 
             $admin->setAbonnement($abonnements[array_rand($abonnements)]);
 
-
         }
         $manager->flush();
     }

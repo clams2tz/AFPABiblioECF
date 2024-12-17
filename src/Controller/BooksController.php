@@ -23,7 +23,7 @@ class BooksController extends AbstractController
     public function __construct(BooksRepository $booksRepository, LoansRepository $loansRepository, UsersRepository $usersRepository){
         $this->booksRepository = $booksRepository;
         $this->loansRepository = $loansRepository;
-        $this->userRepository = $usersRepository;
+        $this->usersRepository = $usersRepository;
     }
 
     #[Route('/books', name: 'index_books')]
@@ -68,6 +68,7 @@ class BooksController extends AbstractController
             'form'=> $form->createView(),
             'loans'=> $loans,
             'user'=> $user,
+            'comment' => $comment,
         ]);
     }
 
